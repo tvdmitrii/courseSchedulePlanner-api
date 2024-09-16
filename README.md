@@ -29,5 +29,11 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
   * JUnit tests to cover all testable logic
 * IDE: IntelliJ IDEA
 
-#### [Development Log](DevLog.md)
+## Design
 
+- [User stories](DesignDocuments/userStories.md) outlining the project capabilities.
+- [Application Screen Mockups](DesignDocuments/screens.md).
+
+## Development Progression
+- [Project plan](projectPlan.md) outlining a rough project execution plan.
+- [Development log](developmentLog.md).
