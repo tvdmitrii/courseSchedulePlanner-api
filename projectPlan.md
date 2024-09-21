@@ -4,9 +4,17 @@
 - [x] Problem statement
 - [x] User stories
 - [x] Development log
-- [ ] Project plan
+- [x] Project plan
 - [x] Screen design
-- [ ] Reflection statements pushed to GitHub
+- [x] Reflection statements pushed to GitHub
+
+### Week 5 - Week 6.
+- [ ] Setup project skeleton
+- [ ] Setup persistence package that will handle database interactions
+- [ ] Setup REST API package that will handle the business logic
+- [ ] Setup the font-end package that will handle the UI
+- [ ] Design the database
+- [ ] Identify what kinds of requests the database must handle
 
 ### Week 7. Checkpoint 2.
  - [ ] Database designed and created
@@ -14,7 +22,25 @@
  - [ ] DAO is fully unit tested
  - [ ] Log4J is implemented
  
+### Week 8.
+- [ ] Design the REST API
+- [ ] Identify what endpoints the REST API will require
+
  ### Week 9. Checkpoint 3.
 - [ ] Deployed to AWS
 - [ ] At least one JSP that displays data from the database is implemented
 - [ ] Authentication implemented.
+
+### Week 10 - 14.
+- [ ] TBD
+
+### Week 15.
+- [ ] Implement Feedback from Week 14 review
+- [ ] Final Presentation
+- [ ] Create video, add video link to readme.md
+- [ ] Finalize all documentation
+- [ ] Code quality check
+- [ ] Weekly journal entry
+
+### Week 16.
+- [ ] Final touches
