@@ -10,9 +10,11 @@ class UserTest {
     private User user2;
 
     @BeforeEach
-    void setUp() {
+    void populateUsers() {
         user1 = new User("John", "Smith", "john.smith@example.com", User.Type.USER);
+        user1.setId(22);
         user2 = new User("Kyle", "Thompson", "kyle.thompson@example.com", User.Type.ADMIN);
+        user2.setId(11);
     }
 
     @Test
@@ -22,8 +24,6 @@ class UserTest {
 
     @Test
     void testEqualsSameUser() {
-        user1.setId(22);
-
         User sameUser = new User(user1.getFirstName(), user1.getLastName(), user1.getEmail(), user1.getRole());
         sameUser.setId(user1.getId());
 
@@ -37,9 +37,6 @@ class UserTest {
 
     @Test
     void testEqualsDifferentUser() {
-        user1.setId(22);
-        user2.setId(11);
-
         assertNotEquals(user1, user2);
         assertNotEquals(user1.getId(), user2.getId());
         assertNotEquals(user1.getFirstName(), user2.getFirstName());
@@ -50,8 +47,6 @@ class UserTest {
 
     @Test
     void testHashCodeSameUser() {
-        user1.setId(22);
-
         User sameUser = new User(user1.getFirstName(), user1.getLastName(), user1.getEmail(), user1.getRole());
         sameUser.setId(user1.getId());
 
@@ -60,9 +55,6 @@ class UserTest {
 
     @Test
     void testHashCodeDifferentUser() {
-        user1.setId(22);
-        user2.setId(11);
-
         assertNotEquals(user1, user2);
         assertNotEquals(user1.getId(), user2.getId());
         assertNotEquals(user1.getFirstName(), user2.getFirstName());
