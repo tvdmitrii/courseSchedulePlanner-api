@@ -8,47 +8,47 @@ DROP TABLE IF EXISTS `user`;
 
 -- Create tables
 CREATE TABLE `course` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(128) NOT NULL,
     `description` TEXT NOT NULL,
     `credits` TINYINT UNSIGNED NOT NULL,
     `number` SMALLINT UNSIGNED NOT NULL,
-    `department_id` INT UNSIGNED NOT NULL,
+    `department_id` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `department` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `instructor` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `first_name` varchar(64)  NOT NULL,
     `last_name` varchar(64)  NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `schedule` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `user_id` INT UNSIGNED NOT NULL,
-    `section_id` INT UNSIGNED NOT NULL,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT UNSIGNED NOT NULL,
+    `section_id` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `section` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `days_of_week` TINYINT UNSIGNED NOT NULL,
     `from_time` TIME NOT NULL,
     `to_time` TIME NOT NULL,
-    `instructor_id` INT UNSIGNED NOT NULL,
-    `course_id` INT UNSIGNED NOT NULL,
+    `instructor_id` BIGINT UNSIGNED NOT NULL,
+    `course_id` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `user` (
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `first_name` varchar(64) NOT NULL,
     `last_name` varchar(64) NOT NULL,
     `email` varchar(128) NOT NULL,
