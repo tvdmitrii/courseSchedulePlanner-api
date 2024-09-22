@@ -2,7 +2,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # Hibernate configs
-src/main/java/resources/hibernate.cfg.xml
+src/main/resources/hibernate.cfg.xml
 src/main/test/resources/hibernate.cfg.xml
 
 # User-specific stuff:
