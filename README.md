@@ -31,6 +31,7 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
 
 ## Design
 
+- [Database design](DesignDocuments/databaseDesign.png).
 - [User stories](DesignDocuments/userStories.md) outlining the project capabilities.
 - [Application Screen Mockups](DesignDocuments/screens.md).
 

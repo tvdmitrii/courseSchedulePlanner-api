@@ -15,3 +15,10 @@
 - Completed user stories.
 - Completed project draft plan.
 - Ready for Checkpoint 1.
+
+### Week 4 - (09/15/2024 - 09/21/2024) - ~ 6 hours
+- Completed database design.
+- Integrated log4j logging.
+- Integrated Hibernate ORM.
+- Created User entity and UserDao.
+- Created tests for User and UserDao.

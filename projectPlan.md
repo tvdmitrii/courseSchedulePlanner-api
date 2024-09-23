@@ -7,20 +7,22 @@
 - [x] Project plan
 - [x] Screen design
 - [x] Reflection statements pushed to GitHub
+- [x] Database designed and created
+- [x] Setup project skeleton
+- [x] At least one DAO with full CRUD (create, read, update, delete) implemented with Hibernate
+- [x] Log4J is implemented
+- [x] Setup persistence package that will handle database interactions
 
 ### Week 5 - Week 6.
-- [ ] Setup project skeleton
-- [ ] Setup persistence package that will handle database interactions
 - [ ] Setup REST API package that will handle the business logic
 - [ ] Setup the font-end package that will handle the UI
 - [ ] Design the database
 - [ ] Identify what kinds of requests the database must handle
 
 ### Week 7. Checkpoint 2.
- - [ ] Database designed and created
- - [ ] At least one DAO with full CRUD (create, read, update, delete) implemented with Hibernate
- - [ ] DAO is fully unit tested
- - [ ] Log4J is implemented
+
+- [ ] DAO is fully unit tested
+
  
 ### Week 8.
 - [ ] Design the REST API
