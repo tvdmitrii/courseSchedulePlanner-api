@@ -12,15 +12,27 @@ class DepartmentTest {
 
     @BeforeEach
     void populateUsers() {
-        dept1 = new Department("Computer Science");
+        dept1 = new Department("CS", "Computer Science");
         dept1.setId(1);
-        dept2 = new Department("Engineering");
+        dept2 = new Department("ENG", "Engineering");
         dept2.setId(2);
     }
 
     @Test
+    void constructorUpperCaseCode() {
+        dept1 = new Department("comp sci", "Computer Science");
+        assertEquals(dept1.getCode(), "COMP SCI");
+    }
+
+    @Test
+    void setUpperCaseCode() {
+        dept1.setCode("comp sci");
+        assertEquals(dept1.getCode(), "COMP SCI");
+    }
+
+    @Test
     void testSameObject() {
-        Department dept1_copy = new Department(dept1.getName());
+        Department dept1_copy = new Department(dept1.getCode(), dept1.getName());
         dept1_copy.setId(dept1.getId());
 
         assertEquals(dept1, dept1_copy);
@@ -33,7 +45,7 @@ class DepartmentTest {
 
     @Test
     void testHashCodeSameObject() {
-        Department dept1_copy = new Department(dept1.getName());
+        Department dept1_copy = new Department(dept1.getCode(), dept1.getName());
         dept1_copy.setId(dept1.getId());
 
         assertEquals(dept1.hashCode(), dept1_copy.hashCode());

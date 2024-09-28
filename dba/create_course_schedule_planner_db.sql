@@ -19,6 +19,7 @@ CREATE TABLE `course` (
 
 CREATE TABLE `department` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `code` VARCHAR(10) NOT NULL,
     `name` VARCHAR(128) NOT NULL,
     PRIMARY KEY (`id`)
 );
@@ -71,6 +72,7 @@ ALTER TABLE `section` ADD CONSTRAINT `section_instructor` FOREIGN KEY `section_i
 -- Unique
 ALTER TABLE `course` ADD UNIQUE `uq_course_department_number`(`department_id`,`number`);
 ALTER TABLE `department` ADD UNIQUE `uq_department_name`(`name`);
+ALTER TABLE `department` ADD UNIQUE `uq_department_code`(`code`);
 ALTER TABLE `instructor` ADD UNIQUE `uq_instructor_name`(`first_name`,`last_name`);
 ALTER TABLE `user` ADD UNIQUE `uq_user_email`(`email`);
 

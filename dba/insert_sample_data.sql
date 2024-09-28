@@ -14,11 +14,11 @@ VALUES
 (3, "Raymond", "Walker");
 
 INSERT INTO `department`
-(`id`, `name`)
+(`id`, `code`, `name`)
 VALUES
-(1, "Computer Science"), 
-(2, "Engineering"),
-(3, "English");
+(1, "CS", "Computer Science"),
+(2, "ENG", "Engineering"),
+(3, "ENGL", "English");
 
 INSERT INTO `course`
 (`id`, `title`, `description`, `credits`, `number`, `department_id`)

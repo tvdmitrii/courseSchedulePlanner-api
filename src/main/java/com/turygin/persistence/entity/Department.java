@@ -16,6 +16,10 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    /** Short department code name. Always upper case. */
+    @Column(name = "code")
+    private String code;
+
     /** Department name. */
     @Column(name = "name")
     private String name;
@@ -29,7 +33,8 @@ public class Department {
      * Instantiates a new department object.
      * @param name name of the department
      */
-    public Department(String name) {
+    public Department(String code, String name) {
+        this.code = code.toUpperCase();
         this.name = name;
     }
 
@@ -66,14 +71,31 @@ public class Department {
     }
 
     /**
+     * Gets department code.
+     * @return department code
+     */
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * Sets the department code.
+     * @param code new department code
+     */
+    public void setCode(String code) {
+        this.code = code.toUpperCase();
+    }
+
+    /**
      * Generates a string representation of the department object.
      * @return string representation of the department
      */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Department{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", name=").append(name);
+        sb.append("id=").append(id);
+        sb.append(", code='").append(code).append('\'');
+        sb.append(", name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -88,7 +110,7 @@ public class Department {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Department that = (Department) o;
-        return id == that.id && Objects.equals(name, that.name);
+        return id == that.id && Objects.equals(code, that.code) && Objects.equals(name, that.name);
     }
 
     /**
@@ -97,6 +119,6 @@ public class Department {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, code, name);
     }
 }
