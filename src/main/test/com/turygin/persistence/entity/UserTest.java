@@ -55,11 +55,6 @@ class UserTest {
 
     @Test
     void testHashCodeDifferentUser() {
-        assertNotEquals(user1, user2);
-        assertNotEquals(user1.getId(), user2.getId());
-        assertNotEquals(user1.getFirstName(), user2.getFirstName());
-        assertNotEquals(user1.getLastName(), user2.getLastName());
-        assertNotEquals(user1.getEmail(), user2.getEmail());
-        assertNotEquals(user1.getRole(), user2.getRole());
+        assertNotEquals(user1.hashCode(), user2.hashCode());
     }
 }
