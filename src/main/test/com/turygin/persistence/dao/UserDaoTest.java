@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ class UserDaoTest {
 
     private static final Logger logger = LogManager.getLogger(UserDaoTest.class);
     private static final List<User> users = new ArrayList<>();
+    private final Dao<User> userDao = new Dao<>(User.class);
 
     @BeforeAll
     static void resetDatabase() {
@@ -41,7 +41,7 @@ class UserDaoTest {
     void getById() {
         User user1 = users.get(0);
 
-        User user = UserDao.getById(user1.getId());
+        User user = userDao.getById(user1.getId());
 
         assertNotNull(user);
         assertEquals(user1, user);
@@ -49,7 +49,7 @@ class UserDaoTest {
 
     @Test
     void getById_InvalidId() {
-        User user = UserDao.getById(1000);
+        User user = userDao.getById(1000);
 
         assertNull(user);
     }
@@ -59,10 +59,10 @@ class UserDaoTest {
         String newLastName = "Thompson";
         User user2 = users.get(1);
 
-        user2 = UserDao.getById(user2.getId()); // get detached instance
+        user2 = userDao.getById(user2.getId()); // get detached instance
         user2.setLastName(newLastName);
-        UserDao.update(user2);
-        User user = UserDao.getById(user2.getId());
+        userDao.update(user2);
+        User user = userDao.getById(user2.getId());
 
         assertEquals(user2, user);
     }
@@ -71,10 +71,10 @@ class UserDaoTest {
     void insert() {
         User newUser = new User("Another", "Person", "another.person@example.com", User.Type.USER);
 
-        long newId = UserDao.insert(newUser);
-        User user = UserDao.getById(newId);
+        userDao.insert(newUser);
+        User user = userDao.getById(newUser.getId());
 
-        assertEquals(newId, user.getId());
+        assertEquals(newUser, user);
         assertEquals(newUser, user);
     }
 
@@ -84,15 +84,15 @@ class UserDaoTest {
 
         User newUser = new User(user3.getFirstName(), user3.getLastName(), user3.getEmail(), user3.getRole());
 
-        assertThrows(ConstraintViolationException.class, () -> UserDao.insert(newUser));
+        assertThrows(ConstraintViolationException.class, () -> userDao.insert(newUser));
     }
 
     @Test
     void delete() {
         User user4 = users.get(3);
 
-        UserDao.delete(user4);
-        User user = UserDao.getById(user4.getId());
+        userDao.delete(user4);
+        User user = userDao.getById(user4.getId());
         users.remove(user4);
 
         assertNull(user);
@@ -100,7 +100,7 @@ class UserDaoTest {
 
     @Test
     void getAll() {
-        List<User> usersFromDb = UserDao.getAll();
+        List<User> usersFromDb = userDao.getAll();
 
         assertNotNull(usersFromDb);
         assertEquals(usersFromDb.size(), users.size());
@@ -112,7 +112,7 @@ class UserDaoTest {
     @Test
     void getByPropertyEquals_String() {
         User user1 = users.get(0);
-        List<User> foundUsers = UserDao.getByPropertyEquals("firstName", user1.getFirstName());
+        List<User> foundUsers = userDao.getByPropertyEquals("firstName", user1.getFirstName());
 
         assertNotNull(foundUsers);
         assertEquals(foundUsers.size(), 1);
@@ -122,7 +122,7 @@ class UserDaoTest {
     @Test
     void getByPropertyEquals_Long() {
         User user2 = users.get(1);
-        List<User> foundUsers = UserDao.getByPropertyEquals("id", user2.getId());
+        List<User> foundUsers = userDao.getByPropertyEquals("id", user2.getId());
 
         assertNotNull(foundUsers);
         assertEquals(foundUsers.size(), 1);
@@ -131,14 +131,14 @@ class UserDaoTest {
 
     @Test
     void getByPropertyEquals_Missing() {
-        List<User> foundUsers = UserDao.getByPropertyEquals("id", 1000);
+        List<User> foundUsers = userDao.getByPropertyEquals("id", 1000);
 
         assertEquals(foundUsers.size(), 0);
     }
 
     @Test
     void getByPropertySubstring() {
-        List<User> foundUsers = UserDao.getByPropertySubstring("lastName", "son");
+        List<User> foundUsers = userDao.getByPropertySubstring("lastName", "son");
 
         assertNotNull(foundUsers);
         assertEquals(foundUsers.size(), 3);
