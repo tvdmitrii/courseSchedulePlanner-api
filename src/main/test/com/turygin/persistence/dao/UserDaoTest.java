@@ -75,7 +75,6 @@ class UserDaoTest {
         User user = userDao.getById(newUser.getId());
 
         assertEquals(newUser, user);
-        assertEquals(newUser, user);
     }
 
     @Test

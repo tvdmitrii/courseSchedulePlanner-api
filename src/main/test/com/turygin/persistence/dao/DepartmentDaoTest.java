@@ -75,7 +75,6 @@ class DepartmentDaoTest {
         Department department = departmentDao.getById(newDepartment.getId());
 
         assertEquals(newDepartment, department);
-        assertEquals(newDepartment, department);
     }
 
     @Test
