@@ -96,8 +96,8 @@ public class Instructor {
 
 
     /**
-     * Generates a string representation of the department object.
-     * @return string representation of the department
+     * Generates a string representation of the instructor object.
+     * @return string representation of the instructor
      */
     @Override
     public String toString() {
