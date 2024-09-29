@@ -97,7 +97,8 @@ INSERT INTO `instructor`
 VALUES
 (1, "Mattie", "Carpenter"), 
 (2, "Clinton", "Edwards"),
-(3, "Raymond", "Walker");
+(3, "Raymond", "Walker"),
+(4, "Unused", "Instructor");
 
 INSERT INTO `department`
 (`id`, `code`, `name`)
