@@ -18,7 +18,8 @@ INSERT INTO `department`
 VALUES
 (1, "CS", "Computer Science"),
 (2, "ENG", "Engineering"),
-(3, "ENGL", "English");
+(3, "ENGL", "English"),
+(4, "UD", "Unused Department");
 
 INSERT INTO `course`
 (`id`, `title`, `description`, `credits`, `number`, `department_id`)
