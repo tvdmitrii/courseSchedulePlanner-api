@@ -2,7 +2,7 @@ package com.turygin.persistence.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A class representing a department.
@@ -24,6 +24,10 @@ public class Department {
     @Column(name = "name")
     private String name;
 
+    /** Courses associated with the department. */
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Course> courses = new ArrayList<>();
+
     /**
      * Empty constructor.
      */
@@ -34,8 +38,8 @@ public class Department {
      * @param name name of the department
      */
     public Department(String code, String name) {
-        this.code = code.toUpperCase();
         this.name = name;
+        setCode(code);
     }
 
     /**
@@ -84,6 +88,40 @@ public class Department {
      */
     public void setCode(String code) {
         this.code = code.toUpperCase();
+    }
+
+    /**
+     * Returns a list of courses associated with the department.
+     * @return a list of courses
+     */
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    /**
+     * Set course list.
+     * @param courses new course list
+     */
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    /**
+     * Add a course to the list.
+     * @param course a new course to add
+     */
+    public void addCourse(Course course) {
+        courses.add(course);
+        course.setDepartment(this);
+    }
+
+    /**
+     * Remove course from the list.
+     * @param course a course to remove.
+     */
+    public void removeCourse(Course course) {
+        courses.remove(course);
+        course.setDepartment(null);
     }
 
     /**

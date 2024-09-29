@@ -1,5 +1,6 @@
 package com.turygin.persistence.dao;
 
+import com.turygin.persistence.entity.Course;
 import com.turygin.persistence.entity.Department;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +17,7 @@ class DepartmentDaoTest {
 
     private static final Logger logger = LogManager.getLogger(DepartmentDaoTest.class);
     private static final List<Department> departments = new ArrayList<>();
+    private static final List<Course> csCourses = new ArrayList<>();
     private final Dao<Department> departmentDao = new Dao<>(Department.class);
 
     @BeforeAll
@@ -33,6 +35,23 @@ class DepartmentDaoTest {
         for(int i = 0; i < departments.size(); i++) {
             departments.get(i).setId(i + 1);
         }
+
+        // Populate CS department with courses
+        csCourses.add(new Course("Introduction to Databases",
+                "An introduction to databases course explores the fundamental concepts of database design, management, and querying, with a focus on relational databases and SQL.",
+                3, 121, departments.get(0)));
+        csCourses.add(new Course("Introduction to Programming",
+                "An introduction to programming course teaches the basics of coding, problem-solving, and algorithmic thinking, using a beginner-friendly language to build foundational skills in software development.",
+                3, 101, departments.get(0)));
+        csCourses.add(new Course("Advanced Python",
+                "An advanced Python course dives into complex programming concepts, including object-oriented design, multithreading, data structures, and advanced libraries, empowering students to build efficient, scalable applications.",
+                4, 202, departments.get(0)));
+
+        for(int i = 0; i < csCourses.size(); i++) {
+            csCourses.get(i).setId(i + 1);
+        }
+
+        departments.get(0).setCourses(csCourses);
     }
 
 
@@ -140,5 +159,48 @@ class DepartmentDaoTest {
 
         assertNotNull(foundDepts);
         assertEquals(foundDepts.size(), 2);
+    }
+
+    @Test
+    void getAllCourses() {
+        Department department1 = departments.get(0);
+
+        Department department = departmentDao.getById(department1.getId());
+        assertEquals(csCourses.size(), department.getCourses().size());
+
+        // Course are not necessarily ordered by ID.
+        List<Course> coursesFromDb = department.getCourses();
+        coursesFromDb.sort((c1, c2) -> {
+            if( c1.getId() == c2.getId() ) return 0;
+            return c1.getId() > c2.getId() ? 1 : -1;
+        });
+
+        for(int i = 0; i < csCourses.size(); i++) {
+            assertEquals(csCourses.get(i), coursesFromDb.get(i));
+        }
+    }
+
+    @Test
+    void addCourse() {
+        Department engineering = departments.get(1);
+        Course statics = new Course("Statics", "Teaches about equilibrium force balance.",
+                3, 123);
+        engineering.addCourse(statics);
+        departmentDao.update(engineering);
+
+        Department department = departmentDao.getById(engineering.getId());
+        assertEquals(3, department.getCourses().size());
+
+        // Find course by name and update id
+        boolean found = false;
+        for (Course course : department.getCourses()) {
+            if (course.getTitle().equals(statics.getTitle())) {
+                found = true;
+                statics.setId(course.getId());
+                break;
+            }
+        }
+        assertTrue(found);
+        assertTrue(department.getCourses().contains(statics));
     }
 }

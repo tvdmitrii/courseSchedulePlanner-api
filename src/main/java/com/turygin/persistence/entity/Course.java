@@ -1,6 +1,7 @@
 package com.turygin.persistence.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Objects;
 
@@ -34,9 +35,6 @@ public class Course {
 
     /** Course department. */
     @ManyToOne
-    @JoinColumn(name = "department_id",
-            foreignKey = @ForeignKey(name = "course_department")
-    )
     private Department department;
 
     /**
