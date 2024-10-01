@@ -4,10 +4,6 @@
 # Logs
 logs/
 
-# Hibernate configs
-src/main/resources/hibernate.cfg.xml
-src/main/test/resources/hibernate.cfg.xml
-
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
