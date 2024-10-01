@@ -35,6 +35,7 @@ public class Course {
 
     /** Course department. */
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     /**
@@ -145,14 +146,6 @@ public class Course {
     }
 
     /**
-     * Sets id.
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Gets course number.
      * @return the course number
      */
@@ -233,8 +226,7 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return id == course.id &&
-                credits == course.credits &&
+        return credits == course.credits &&
                 number == course.number &&
                 Objects.equals(title, course.title) &&
                 Objects.equals(description, course.description);
@@ -246,6 +238,6 @@ public class Course {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, credits, number);
+        return Objects.hash(title, description, credits, number);
     }
 }

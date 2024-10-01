@@ -98,15 +98,6 @@ public class User {
     }
 
     /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Gets last name.
      *
      * @return the last name
@@ -158,8 +149,8 @@ public class User {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("email='").append(email).append('\'');
-        sb.append(", id=").append(id);
+        sb.append("id=").append(id);
+        sb.append(", email='").append(email).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", role=").append(role);
@@ -181,8 +172,7 @@ public class User {
         // Now we can safely cast Object to User
         User user = (User) o;
         // Objects.equals checks for null before calling .equals()
-        return id == user.id &&
-                Objects.equals(firstName, user.firstName) &&
+        return Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
                 role == user.role;
@@ -194,6 +184,6 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, role);
+        return Objects.hash(firstName, lastName, email, role);
     }
 }

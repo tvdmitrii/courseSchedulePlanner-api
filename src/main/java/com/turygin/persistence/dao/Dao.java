@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class Dao<T> {
 
-    private static final Logger logger = LogManager.getLogger(Dao.class);
-    private static final SessionFactory sessionFactory = SessionFactoryProvider.getSessionFactory();
+    private static final Logger LOG = LogManager.getLogger(Dao.class);
+    private static final SessionFactory SESSION_FACTORY = SessionFactoryProvider.getSessionFactory();
 
-    private final Class<T> entityClass;
+    private final Class<T> ENTITY_CLASS;
 
     /**
      * Constructor that stores object's class for use with Hibernate.
@@ -28,7 +28,7 @@ public class Dao<T> {
      * @param entityClass object' class
      */
     public Dao(Class<T> entityClass) {
-        this.entityClass = entityClass;
+        this.ENTITY_CLASS = entityClass;
     }
 
     /**
@@ -37,11 +37,11 @@ public class Dao<T> {
      * @return entity object, or null if not found
      */
     public T getById(long id) {
-        logger.debug("Searching entity by id: {}", id);
-        Session session = sessionFactory.openSession();
-        T user = session.get(entityClass, id);
+        LOG.debug("Searching entity by id: {}", id);
+        Session session = SESSION_FACTORY.openSession();
+        T entity = session.get(ENTITY_CLASS, id);
         session.close();
-        return user;
+        return entity;
     }
 
     /**
@@ -49,8 +49,8 @@ public class Dao<T> {
      * @param entity the entity to save into the database
      */
     public void update(T entity) {
-        logger.debug("Updating entity: {}", entity);
-        sessionFactory.inTransaction(session -> {
+        LOG.debug("Updating entity: {}", entity);
+        SESSION_FACTORY.inTransaction(session -> {
             session.merge(entity);
         });
     }
@@ -61,8 +61,8 @@ public class Dao<T> {
      * @param entity the entity to insert into the database
      */
     public void insert(T entity) {
-        logger.debug("Inserting entity: {}", entity);
-        sessionFactory.inTransaction(session -> {
+        LOG.debug("Inserting entity: {}", entity);
+        SESSION_FACTORY.inTransaction(session -> {
             session.persist(entity);
         });
     }
@@ -72,8 +72,8 @@ public class Dao<T> {
      * @param entity the entity to remove
      */
     public void delete(T entity) {
-        logger.debug("Deleting entity: {}", entity);
-        sessionFactory.inTransaction(session -> {
+        LOG.debug("Deleting entity: {}", entity);
+        SESSION_FACTORY.inTransaction(session -> {
             session.remove(entity);
         });
     }
@@ -83,15 +83,15 @@ public class Dao<T> {
      * @return a list of all entities
      */
     public List<T> getAll() {
-        Session session = sessionFactory.openSession();
+        Session session = SESSION_FACTORY.openSession();
 
         HibernateCriteriaBuilder b = session.getCriteriaBuilder();
-        JpaCriteriaQuery<T> q = b.createQuery(entityClass);
-        Root<T> root = q.from(entityClass);
+        JpaCriteriaQuery<T> q = b.createQuery(ENTITY_CLASS);
+        Root<T> root = q.from(ENTITY_CLASS);
 
         List<T> entities = session.createQuery(q).getResultList();
         session.close();
-        logger.debug("Found {} entities.", entities.size());
+        LOG.debug("Found {} entities.", entities.size());
         return entities;
     }
 
@@ -102,16 +102,16 @@ public class Dao<T> {
      * @return a list of entities matching the search criteria
      */
     public List<T> getByPropertyEquals(String property, Object value) {
-        logger.debug("Searching users by {} equal to '{}'", property, value);
-        Session session = sessionFactory.openSession();
+        LOG.debug("Searching entities by {} equal to '{}'", property, value);
+        Session session = SESSION_FACTORY.openSession();
         HibernateCriteriaBuilder b = session.getCriteriaBuilder();
-        JpaCriteriaQuery<T> q = b.createQuery(entityClass);
-        Root<T> root = q.from(entityClass);
+        JpaCriteriaQuery<T> q = b.createQuery(ENTITY_CLASS);
+        Root<T> root = q.from(ENTITY_CLASS);
         q.select(root).where(b.equal(root.get(property), value));
 
         List<T> entities = session.createQuery(q).getResultList();
         session.close();
-        logger.debug("Found {} entities.", entities.size());
+        LOG.debug("Found {} entities.", entities.size());
         return entities;
     }
 
@@ -122,15 +122,15 @@ public class Dao<T> {
      * @return a list of entities matching the search criteria
      */
     public List<T> getByPropertySubstring(String property, String value) {
-        logger.debug("Searching for users by {} that contains '{}'", property, value);
-        Session session = sessionFactory.openSession();
+        LOG.debug("Searching for entities by {} that contains '{}'", property, value);
+        Session session = SESSION_FACTORY.openSession();
         HibernateCriteriaBuilder b = session.getCriteriaBuilder();
-        JpaCriteriaQuery<T> q = b.createQuery(entityClass);
-        Root<T> root = q.from(entityClass);
+        JpaCriteriaQuery<T> q = b.createQuery(ENTITY_CLASS);
+        Root<T> root = q.from(ENTITY_CLASS);
         q.select(root).where(b.like(root.get(property), String.format("%%%s%%", value)));
 
         List<T> entities = session.createQuery(q).getResultList();
-        logger.debug("Found {} entities.", entities.size());
+        LOG.debug("Found {} entities.", entities.size());
         session.close();
         return entities;
     }

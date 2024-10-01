@@ -48,14 +48,6 @@ public class Instructor {
     }
 
     /**
-     * Sets the instructor id.
-     * @param id new instructor id
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Gets instructor's first name.
      * @return the first name
      */
@@ -119,7 +111,7 @@ public class Instructor {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Instructor that = (Instructor) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
     }
 
     /**
@@ -128,6 +120,6 @@ public class Instructor {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(firstName, lastName);
     }
 }

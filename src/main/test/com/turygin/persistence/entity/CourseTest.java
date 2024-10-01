@@ -14,9 +14,7 @@ class CourseTest {
     void populateUsers() {
         Department compSci = new Department("CS", "Computer Science");
         course1 = new Course("Introduction to Python", "Introduces students to Python.", 3, 101, compSci);
-        course1.setId(1);
         course2 = new Course("Advanced Java", "Java EE.", 4, 203, compSci);
-        course2.setId(2);
     }
 
     @Test
@@ -77,7 +75,6 @@ class CourseTest {
     @Test
     void testSameObject() {
         Course course_copy = new Course(course1.getTitle(), course1.getDescription(), course1.getCredits(), course1.getNumber());
-        course_copy.setId(course1.getId());
 
         assertEquals(course1, course_copy);
     }
@@ -90,7 +87,6 @@ class CourseTest {
     @Test
     void testHashCodeSameObject() {
         Course course_copy = new Course(course1.getTitle(), course1.getDescription(), course1.getCredits(), course1.getNumber());
-        course_copy.setId(course1.getId());
 
         assertEquals(course1.hashCode(), course_copy.hashCode());
     }

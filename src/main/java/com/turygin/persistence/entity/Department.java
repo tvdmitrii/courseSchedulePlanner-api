@@ -25,7 +25,7 @@ public class Department {
     private String name;
 
     /** Courses associated with the department. */
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "department", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Course> courses = new ArrayList<>();
 
     /**
@@ -48,14 +48,6 @@ public class Department {
      */
     public long getId() {
         return id;
-    }
-
-    /**
-     * Sets the department id.
-     * @param id new department id
-     */
-    public void setId(long id) {
-        this.id = id;
     }
 
     /**
@@ -148,7 +140,7 @@ public class Department {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Department that = (Department) o;
-        return id == that.id && Objects.equals(code, that.code) && Objects.equals(name, that.name);
+        return Objects.equals(code, that.code) && Objects.equals(name, that.name);
     }
 
     /**
@@ -157,6 +149,6 @@ public class Department {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, name);
+        return Objects.hash(code, name);
     }
 }

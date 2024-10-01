@@ -13,9 +13,7 @@ class InstructorTest {
     @BeforeEach
     void populateUsers() {
         instructor1 = new Instructor("James", "Connor");
-        instructor1.setId(1);
         instructor2 = new Instructor("Kelly", "Smith");
-        instructor2.setId(2);
     }
 
     @Test
@@ -26,7 +24,6 @@ class InstructorTest {
     @Test
     void testSameObject() {
         Instructor inst1_copy = new Instructor(instructor1.getFirstName(), instructor1.getLastName());
-        inst1_copy.setId(instructor1.getId());
 
         assertEquals(instructor1, inst1_copy);
     }
@@ -39,7 +36,6 @@ class InstructorTest {
     @Test
     void testHashCodeSameObject() {
         Instructor inst1_copy = new Instructor(instructor1.getFirstName(), instructor1.getLastName());
-        inst1_copy.setId(instructor1.getId());
 
         assertEquals(instructor1.hashCode(), inst1_copy.hashCode());
     }
