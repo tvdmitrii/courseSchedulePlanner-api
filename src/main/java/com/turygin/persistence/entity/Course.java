@@ -3,6 +3,8 @@ package com.turygin.persistence.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,6 +39,10 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    /** Sections associated with the course. */
+    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Section> sections = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -196,7 +202,45 @@ public class Course {
      * @return course code
      */
     public String getCode() {
-        return String.format("%s %d", department.getCode(), number);
+        if (department != null) {
+            return String.format("%s %d", department.getCode(), number);
+        }
+
+        return String.format("UNDEFINED %d", number);
+    }
+
+    /**
+     * Returns a list of sections associated with the course.
+     * @return a list of sections
+     */
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    /**
+     * Set section list.
+     * @param sections new section list
+     */
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    /**
+     * Add a section to the list.
+     * @param section a new section to add
+     */
+    public void addSection(Section section) {
+        sections.add(section);
+        section.setCourse(this);
+    }
+
+    /**
+     * Remove section from the list.
+     * @param section a section to remove.
+     */
+    public void removeSection(Section section) {
+        sections.remove(section);
+        section.setCourse(null);
     }
 
     /**

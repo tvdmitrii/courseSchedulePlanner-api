@@ -1,6 +1,9 @@
 package com.turygin.persistence.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,6 +34,14 @@ public class User {
 
     @Column(name = "role")
     private Type role;
+
+    /** Courses in user's cart. */
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<CartCourse> courses = new ArrayList<>();
+
+    /** Generated user schedules. */
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Schedule> schedules = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -140,6 +151,74 @@ public class User {
      */
     public String getFullName() {
         return String.format("%s %s", firstName, lastName);
+    }
+
+    /**
+     * Gets courses in cart.
+     * @return the courses
+     */
+    public List<CartCourse> getCoursesInCart() {
+        return courses;
+    }
+
+    /**
+     * Sets courses in cart.
+     * @param courses the courses
+     */
+    public void setCoursesInCart(List<CartCourse> courses) {
+        this.courses = courses;
+    }
+
+    /**
+     * Adds course to the cart.
+     * @param course the course
+     */
+    public void addCourseToCart(CartCourse course) {
+        this.courses.add(course);
+        course.setUser(this);
+    }
+
+    /**
+     * Removes course from cart.
+     * @param course the course
+     */
+    public void removeSection(CartCourse course) {
+        this.courses.remove(course);
+        course.setUser(null);
+    }
+
+    /**
+     * Gets schedules.
+     * @return the schedules
+     */
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    /**
+     * Sets schedules.
+     * @param schedules the schedules
+     */
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
+    /**
+     * Adds new schedule.
+     * @param schedule the schedule
+     */
+    public void addSchedule(Schedule schedule) {
+        this.schedules.add(schedule);
+        schedule.setUser(this);
+    }
+
+    /**
+     * Removes schedule.
+     * @param schedule the schedule
+     */
+    public void removeSchedule(Schedule schedule) {
+        this.schedules.remove(schedule);
+        schedule.setUser(null);
     }
 
     /**

@@ -21,6 +21,11 @@
         <mapping class="com.turygin.persistence.entity.Department"/>
         <mapping class="com.turygin.persistence.entity.Instructor"/>
         <mapping class="com.turygin.persistence.entity.Course"/>
+        <mapping class="com.turygin.persistence.entity.Section"/>
+        <mapping class="com.turygin.persistence.entity.CartCourse"/>
+        <mapping class="com.turygin.persistence.entity.CartSection"/>
+        <mapping class="com.turygin.persistence.entity.Schedule"/>
+        <mapping class="com.turygin.persistence.entity.ScheduleSection"/>
 
     </session-factory>
 

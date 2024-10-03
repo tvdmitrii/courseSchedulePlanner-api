@@ -35,6 +35,7 @@ public class Department {
 
     /**
      * Instantiates a new department object.
+     * @param code short department code name
      * @param name name of the department
      */
     public Department(String code, String name) {

@@ -2,6 +2,8 @@ package com.turygin.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,6 +25,10 @@ public class Instructor {
     /** Instructor's last name. */
     @Column(name = "last_name")
     private String lastName;
+
+    /** Sections taught by the instructor. */
+    @OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Section> sections = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -86,6 +92,39 @@ public class Instructor {
         return String.format("%s %s", firstName, lastName);
     }
 
+    /**
+     * Returns a list of sections associated with the instructor.
+     * @return a list of sections
+     */
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    /**
+     * Set section list.
+     * @param sections new section list
+     */
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
+
+    /**
+     * Add a section to the list.
+     * @param section a new section to add
+     */
+    public void addSection(Section section) {
+        sections.add(section);
+        section.setInstructor(this);
+    }
+
+    /**
+     * Remove section from the list.
+     * @param section a section to remove.
+     */
+    public void removeSection(Section section) {
+        sections.remove(section);
+        section.setInstructor(null);
+    }
 
     /**
      * Generates a string representation of the instructor object.
