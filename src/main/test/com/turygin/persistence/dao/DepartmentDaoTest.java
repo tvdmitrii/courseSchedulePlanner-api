@@ -2,11 +2,10 @@ package com.turygin.persistence.dao;
 
 import com.turygin.persistence.entity.Course;
 import com.turygin.persistence.entity.Department;
-import com.turygin.persistence.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -25,12 +24,16 @@ class DepartmentDaoTest {
     private static final int INITIAL_DEPARTMENT_COUNT = 5;
     private static final int INITIAL_CS_COURSE_COUNT = 3;
 
-    @BeforeAll
-    static void resetDatabase() {
+    @BeforeEach
+    void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
             LOG.error("Could not reset database!");
             throw new RuntimeException("Could not reset database!");
         }
+
+        // Reset lists
+        DEPARTMENTS.clear();
+        CS_COURSES.clear();
 
         // Populate departments
         DEPARTMENTS.addAll(DEPARTMENT_DAO.getAll());
@@ -58,7 +61,7 @@ class DepartmentDaoTest {
 
     @Test
     void getById_InvalidId() {
-        Department department = DEPARTMENT_DAO.getById(DEPARTMENTS.size() + 10);
+        Department department = DEPARTMENT_DAO.getById(INITIAL_DEPARTMENT_COUNT + 10);
 
         assertNull(department);
     }

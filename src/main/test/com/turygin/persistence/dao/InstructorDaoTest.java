@@ -1,11 +1,10 @@
 package com.turygin.persistence.dao;
 
 import com.turygin.persistence.entity.Instructor;
-import com.turygin.persistence.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,12 +20,15 @@ class InstructorDaoTest {
     private static final Dao<Instructor> INSTRUCTOR_DAO = new Dao<>(Instructor.class);
     private static final int INITIAL_INSTRUCTOR_COUNT = 4;
 
-    @BeforeAll
-    static void resetDatabase() {
+    @BeforeEach
+    void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
             LOG.error("Could not reset database!");
             throw new RuntimeException("Could not reset database!");
         }
+
+        // Reset lists
+        INSTRUCTORS.clear();
 
         // Populate instructors
         INSTRUCTORS.addAll(INSTRUCTOR_DAO.getAll());
@@ -118,15 +120,15 @@ class InstructorDaoTest {
         List<Instructor> foundInsts = INSTRUCTOR_DAO.getByPropertyEquals("lastName", instructor1.getLastName());
 
         assertNotNull(foundInsts);
-        assertEquals(foundInsts.size(), 1);
-        assertEquals(foundInsts.get(0), instructor1);
+        assertEquals(1, foundInsts.size());
+        assertEquals(instructor1, foundInsts.get(0));
     }
 
     @Test
     void getByPropertyEquals_Missing() {
         List<Instructor> foundInsts = INSTRUCTOR_DAO.getByPropertyEquals("id", INSTRUCTORS.size() + 1);
 
-        assertEquals(foundInsts.size(), 0);
+        assertEquals(0, foundInsts.size());
     }
 
     @Test
@@ -134,6 +136,6 @@ class InstructorDaoTest {
         List<Instructor> foundInsts = INSTRUCTOR_DAO.getByPropertySubstring("firstName", "ie");
 
         assertNotNull(foundInsts);
-        assertEquals(foundInsts.size(), 1);
+        assertEquals(1, foundInsts.size());
     }
 }

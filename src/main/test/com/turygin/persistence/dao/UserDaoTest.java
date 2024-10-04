@@ -1,11 +1,10 @@
 package com.turygin.persistence.dao;
 
-import com.turygin.persistence.entity.Department;
 import com.turygin.persistence.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,12 +19,15 @@ class UserDaoTest {
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
     private static final int INITIAL_USER_COUNT = 5;
 
-    @BeforeAll
-    static void resetDatabase() {
+    @BeforeEach
+    void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
             LOG.error("Could not reset database!");
             throw new RuntimeException("Could not reset database!");
         }
+
+        // Reset lists
+        USERS.clear();
 
         // Populate users
         USERS.addAll(USER_DAO.getAll());
@@ -113,8 +115,8 @@ class UserDaoTest {
         List<User> foundUsers = USER_DAO.getByPropertyEquals("firstName", user1.getFirstName());
 
         assertNotNull(foundUsers);
-        assertEquals(foundUsers.size(), 1);
-        assertEquals(foundUsers.get(0), user1);
+        assertEquals(1, foundUsers.size());
+        assertEquals(user1, foundUsers.get(0));
     }
 
     @Test
@@ -123,22 +125,22 @@ class UserDaoTest {
         List<User> foundUsers = USER_DAO.getByPropertyEquals("id", user2.getId());
 
         assertNotNull(foundUsers);
-        assertEquals(foundUsers.size(), 1);
-        assertEquals(foundUsers.get(0), user2);
+        assertEquals(1, foundUsers.size());
+        assertEquals(user2, foundUsers.get(0));
     }
 
     @Test
     void getByPropertyEquals_Missing() {
         List<User> foundUsers = USER_DAO.getByPropertyEquals("id", 1000);
 
-        assertEquals(foundUsers.size(), 0);
+        assertEquals(0, foundUsers.size());
     }
 
     @Test
     void getByPropertySubstring() {
-        List<User> foundUsers = USER_DAO.getByPropertySubstring("lastName", "son");
+        List<User> foundUsers = USER_DAO.getByPropertySubstring("lastName", "in");
 
         assertNotNull(foundUsers);
-        assertEquals(foundUsers.size(), 3);
+        assertEquals(2, foundUsers.size());
     }
 }
