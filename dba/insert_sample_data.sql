@@ -50,12 +50,34 @@ VALUES
 (9, 21, "7:45", "9:00", 3, 5),
 (10, 2, "16:00", "18:00", 3, 6);
 
+INSERT INTO `cart_course`
+(`id`, `user_id`, `course_id`)
+VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 3);
+
+INSERT INTO `cart_course_section`
+(`id`, `cart_course_id`, `section_id`)
+VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 4),
+(4, 3, 6),
+(5, 3, 7);
+
 INSERT INTO `schedule`
-(`id`, `user_id`, `section_id`)
+(`id`, `user_id`, `selected`)
+VALUES
+(1, 1, 0),
+(2, 1, 0),
+(3, 3, 0);
+
+INSERT INTO `schedule_section`
+(`id`, `schedule_id`, `section_id`)
 VALUES
 (1, 1, 1),
 (2, 1, 10),
 (3, 2, 4),
 (4, 2, 3),
 (5, 3, 8);
-

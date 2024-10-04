@@ -2,12 +2,11 @@
 DROP TABLE IF EXISTS `schedule_section`;
 DROP TABLE IF EXISTS `schedule`;
 DROP TABLE IF EXISTS `cart_course_section`;
-DROP TABLE IF EXISTS `section`;
 DROP TABLE IF EXISTS `cart_course`;
+DROP TABLE IF EXISTS `section`;
 DROP TABLE IF EXISTS `course`;
 DROP TABLE IF EXISTS `department`;
 DROP TABLE IF EXISTS `instructor`;
-DROP TABLE IF EXISTS `cart`;
 DROP TABLE IF EXISTS `user`;
 
 -- Create tables
@@ -54,15 +53,9 @@ CREATE TABLE `user` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `cart` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`)
-);
-
 CREATE TABLE `cart_course` (
    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-   `cart_id` BIGINT UNSIGNED NOT NULL,
+   `user_id` BIGINT UNSIGNED NOT NULL,
    `course_id` BIGINT UNSIGNED NOT NULL,
    PRIMARY KEY (`id`)
 );
@@ -91,10 +84,8 @@ CREATE TABLE `schedule_section` (
 -- Foreign Keys
 ALTER TABLE `course` ADD CONSTRAINT `course_department` FOREIGN KEY `course_department` (`department_id`)
     REFERENCES `department` (`id`);
-ALTER TABLE `cart` ADD CONSTRAINT `cart_user` FOREIGN KEY `cart_user` (`user_id`)
+ALTER TABLE `cart_course` ADD CONSTRAINT `cart_course_user` FOREIGN KEY `cart_course_user` (`user_id`)
     REFERENCES `user` (`id`);
-ALTER TABLE `cart_course` ADD CONSTRAINT `cart_course_cart` FOREIGN KEY `cart_course_cart` (`cart_id`)
-    REFERENCES `cart` (`id`);
 ALTER TABLE `cart_course` ADD CONSTRAINT `cart_course_course` FOREIGN KEY `cart_course_course` (`course_id`)
     REFERENCES `course` (`id`);
 ALTER TABLE `cart_course_section` ADD CONSTRAINT `cart_course_section_cart_course` FOREIGN KEY `cart_course_section_cart_course` (`cart_course_id`)
@@ -118,7 +109,6 @@ ALTER TABLE `department` ADD UNIQUE `uq_department_name`(`name`);
 ALTER TABLE `department` ADD UNIQUE `uq_department_code`(`code`);
 ALTER TABLE `instructor` ADD UNIQUE `uq_instructor_name`(`first_name`,`last_name`);
 ALTER TABLE `user` ADD UNIQUE `uq_user_email`(`email`);
-ALTER TABLE `cart` ADD UNIQUE `uq_cart_user`(`user_id`);
 
 -- Checks
 ALTER TABLE `section` ADD CONSTRAINT `section_valid_days_mask` CHECK (`days_of_week` < 32);
