@@ -87,17 +87,17 @@ ALTER TABLE `course` ADD CONSTRAINT `course_department` FOREIGN KEY `course_depa
 ALTER TABLE `cart_course` ADD CONSTRAINT `cart_course_user` FOREIGN KEY `cart_course_user` (`user_id`)
     REFERENCES `user` (`id`);
 ALTER TABLE `cart_course` ADD CONSTRAINT `cart_course_course` FOREIGN KEY `cart_course_course` (`course_id`)
-    REFERENCES `course` (`id`);
+    REFERENCES `course` (`id`) ON DELETE CASCADE;
 ALTER TABLE `cart_course_section` ADD CONSTRAINT `cart_course_section_cart_course` FOREIGN KEY `cart_course_section_cart_course` (`cart_course_id`)
     REFERENCES `cart_course` (`id`);
 ALTER TABLE `cart_course_section` ADD CONSTRAINT `cart_course_section_section` FOREIGN KEY `cart_course_section_section` (`section_id`)
-    REFERENCES `section` (`id`);
+    REFERENCES `section` (`id`) ON DELETE CASCADE;
 ALTER TABLE `schedule` ADD CONSTRAINT `schedule_user` FOREIGN KEY `schedule_user` (`user_id`)
     REFERENCES `user` (`id`);
 ALTER TABLE `schedule_section` ADD CONSTRAINT `schedule_section_schedule` FOREIGN KEY `schedule_section_schedule` (`schedule_id`)
     REFERENCES `schedule` (`id`);
 ALTER TABLE `schedule_section` ADD CONSTRAINT `schedule_section_section` FOREIGN KEY `schedule_section_section` (`section_id`)
-    REFERENCES `section` (`id`);
+    REFERENCES `section` (`id`) ON DELETE CASCADE;
 ALTER TABLE `section` ADD CONSTRAINT `section_course` FOREIGN KEY `section_course` (`course_id`)
     REFERENCES `course` (`id`);
 ALTER TABLE `section` ADD CONSTRAINT `section_instructor` FOREIGN KEY `section_instructor` (`instructor_id`)
