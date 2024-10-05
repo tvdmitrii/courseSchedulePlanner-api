@@ -182,7 +182,7 @@ public class User {
      * Removes course from cart.
      * @param course the course
      */
-    public void removeSection(CartCourse course) {
+    public void removeCourseFromCart(CartCourse course) {
         this.courses.remove(course);
         course.setUser(null);
     }

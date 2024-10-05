@@ -1,6 +1,6 @@
 package com.turygin.persistence.dao;
 
-import com.turygin.persistence.entity.User;
+import com.turygin.persistence.entity.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
@@ -17,6 +17,12 @@ class UserDaoTest {
     private static final Logger LOG = LogManager.getLogger(UserDaoTest.class);
     private static final List<User> USERS = new ArrayList<>();
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
+    private static final Dao<CartCourse> CART_COURSE_DAO = new Dao<>(CartCourse.class);
+    private static final Dao<CartSection> CART_SECTION_DAO = new Dao<>(CartSection.class);
+    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
+    private static final Dao<Schedule> SCHEDULE_DAO = new Dao<>(Schedule.class);
+    private static final Dao<ScheduleSection> SCHEDULE_SECTION_DAO = new Dao<>(ScheduleSection.class);
     private static final int INITIAL_USER_COUNT = 5;
 
     @BeforeEach
@@ -142,5 +148,110 @@ class UserDaoTest {
 
         assertNotNull(foundUsers);
         assertEquals(2, foundUsers.size());
+    }
+
+    @Test
+    void addCourseWithSectionsToCart() {
+        User user1 = USERS.get(3);
+        Course pythonCourse = COURSE_DAO.getById(3);
+        List<Section> courseSections = pythonCourse.getSections();
+
+        // New cart course
+        CartCourse cartCourse = new CartCourse(user1, pythonCourse);
+        // Add all sections to cart
+        courseSections.forEach(cartCourse::addSection);
+        // Add course with sections to cart
+        user1.addCourseToCart(cartCourse);
+        // Save sections for comparison
+        List<CartSection> cartCourseSections = cartCourse.getSections();
+        cartCourseSections.sort(Comparator.comparingLong(CartSection::getId));
+
+        USER_DAO.update(user1);
+        User user = USER_DAO.getById(user1.getId());
+
+        // Has course in cart
+        assertTrue(user.getCoursesInCart().contains(cartCourse));
+
+        // Has the right course
+        CartCourse course = user.getCoursesInCart().get(0);
+        assertEquals(pythonCourse, course.getCourse());
+
+        // Has all the sections
+        List<CartSection> sections =  course.getSections();
+        sections.sort(Comparator.comparingLong(CartSection::getId));
+        for (int i = 0; i < sections.size(); i++) {
+            assertEquals(cartCourseSections.get(i), sections.get(i));
+        }
+    }
+
+    @Test
+    void removeCourseWithSectionsFromCart() {
+        User user1 = USERS.get(0);
+        CartCourse cartCourse = user1.getCoursesInCart().get(0);
+        List<CartSection> cartSections = cartCourse.getSections();
+
+        user1.removeCourseFromCart(cartCourse);
+        USER_DAO.update(user1);
+
+        // Course removed from users cart
+        User user = USER_DAO.getById(user1.getId());
+        assertFalse(user.getCoursesInCart().contains(cartCourse));
+
+        // Double-check the cart table
+        CartCourse course = CART_COURSE_DAO.getById(cartCourse.getId());
+        assertNull(course);
+
+        // Check that sections where removed
+        for (CartSection section : cartSections) {
+            assertNull(CART_SECTION_DAO.getById(section.getId()));
+        }
+    }
+
+    @Test
+    void addNewScheduleWithSections() {
+        User user1 = USERS.get(3);
+        Schedule schedule = new Schedule();
+        List<Section> sections = SECTION_DAO.getAll();
+
+        sections.forEach(schedule::addSection);
+        List<ScheduleSection> scheduleSections = schedule.getSections();
+        scheduleSections.sort(Comparator.comparingLong(ScheduleSection::getId));
+
+        user1.addSchedule(schedule);
+        USER_DAO.update(user1);
+
+        // User has the new schedule
+        User user = USER_DAO.getById(user1.getId());
+        assertTrue(user.getSchedules().contains(schedule));
+
+        // Schedule has the right sections
+        List<ScheduleSection> dbSections = schedule.getSections();
+        dbSections.sort(Comparator.comparingLong(ScheduleSection::getId));
+        for (int i = 0; i < scheduleSections.size(); i++) {
+            assertEquals(scheduleSections.get(i), dbSections.get(i));
+        }
+    }
+
+    @Test
+    void removeScheduleWithSections() {
+        User user1 = USERS.get(0);
+        Schedule schedule = user1.getSchedules().get(0);
+        List<ScheduleSection> scheduleSections = schedule.getSections();
+
+        user1.removeSchedule(schedule);
+        USER_DAO.update(user1);
+
+        // Schedule removed
+        User user = USER_DAO.getById(user1.getId());
+        assertFalse(user.getSchedules().contains(schedule));
+
+        // Double-check the schedule table
+        Schedule dbSchedule = SCHEDULE_DAO.getById(schedule.getId());
+        assertNull(dbSchedule);
+
+        // Check that sections where removed
+        for (ScheduleSection section : scheduleSections) {
+            assertNull(SCHEDULE_SECTION_DAO.getById(section.getId()));
+        }
     }
 }

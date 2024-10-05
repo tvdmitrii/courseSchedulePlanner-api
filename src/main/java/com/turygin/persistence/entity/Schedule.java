@@ -77,12 +77,21 @@ public class Schedule {
     }
 
     /**
-     * Adds a section.
-     * @param section the section
+     * Adds schedule section.
+     * @param section the schedule section
      */
     public void addSection(ScheduleSection section) {
         sections.add(section);
         section.setSchedule(this);
+    }
+
+    /**
+     * Adds a regular section.
+     * @param section the regular section
+     */
+    public void addSection(Section section) {
+        ScheduleSection newSection = new ScheduleSection(this, section);
+        sections.add(newSection);
     }
 
     /**

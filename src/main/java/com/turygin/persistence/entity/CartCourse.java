@@ -86,8 +86,8 @@ public class CartCourse {
     }
 
     /**
-     * Adds section.
-     * @param section the section
+     * Adds cart section.
+     * @param section cart section
      */
     public void addSection(CartSection section) {
         this.sections.add(section);
@@ -95,8 +95,17 @@ public class CartCourse {
     }
 
     /**
-     * Removes section.
-     * @param section the section
+     * Adds section.
+     * @param section regular section
+     */
+    public void addSection(Section section) {
+        CartSection newSection = new CartSection(this, section);
+        this.sections.add(newSection);
+    }
+
+    /**
+     * Removes cart section.
+     * @param section the cart section
      */
     public void removeSection(CartSection section) {
         this.sections.remove(section);
