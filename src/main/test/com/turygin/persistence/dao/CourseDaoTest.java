@@ -144,40 +144,40 @@ public class CourseDaoTest {
 
     @Test
     void getAll() {
-        List<Course> deptsFromDb = COURSE_DAO.getAll();
+        List<Course> coursesFromDb = COURSE_DAO.getAll();
 
-        assertNotNull(deptsFromDb);
-        assertEquals(COURSES.size(), deptsFromDb.size());
+        assertNotNull(coursesFromDb);
+        assertEquals(COURSES.size(), coursesFromDb.size());
 
-        deptsFromDb.sort(Comparator.comparingLong(Course::getId));
+        coursesFromDb.sort(Comparator.comparingLong(Course::getId));
 
         for(int i = 0; i < COURSES.size(); i++) {
-            assertEquals(COURSES.get(i), deptsFromDb.get(i));
+            assertEquals(COURSES.get(i), coursesFromDb.get(i));
         }
     }
 
     @Test
-    void getByPropertyEquals_String() {
+    void getByPropertyEquals() {
         Course course1 = COURSES.get(0);
-        List<Course> foundDepts = COURSE_DAO.getByPropertyEquals("credits", 3);
+        List<Course> foundCourses = COURSE_DAO.getByPropertyEquals("credits", 3);
 
-        assertNotNull(foundDepts);
-        assertEquals(6, foundDepts.size());
+        assertNotNull(foundCourses);
+        assertEquals(6, foundCourses.size());
     }
 
     @Test
     void getByPropertyEquals_Missing() {
-        List<Course> foundDepts = COURSE_DAO.getByPropertyEquals("id", COURSES.size() + 1);
+        List<Course> foundCourses = COURSE_DAO.getByPropertyEquals("id", COURSES.size() + 1);
 
-        assertEquals(0, foundDepts.size());
+        assertEquals(0, foundCourses.size());
     }
 
     @Test
     void getByPropertySubstring() {
-        List<Course> foundDepts = COURSE_DAO.getByPropertySubstring("title", "Introduction");
+        List<Course> foundCourses = COURSE_DAO.getByPropertySubstring("title", "Introduction");
 
-        assertNotNull(foundDepts);
-        assertEquals(2, foundDepts.size());
+        assertNotNull(foundCourses);
+        assertEquals(2, foundCourses.size());
     }
 
     @Test
@@ -212,7 +212,7 @@ public class CourseDaoTest {
     }
 
     @Test
-    void removeSection_NoSections() {
+    void removeSection() {
         Course composition = COURSES.get(5);
         Section sectionToRemove = composition.getSections().get(0);
         composition.removeSection(sectionToRemove);
