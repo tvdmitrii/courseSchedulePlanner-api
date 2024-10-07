@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dmitriiturygin</groupId>
-  <artifactId>course-schedule-planner</artifactId>
+  <artifactId>course-schedule-planner-api</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>course-schedule-planner Maven Webapp</name>
+  <name>course-schedule-planner-api Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -15,16 +15,41 @@
     <junit-vintage-version>4.12.0</junit-vintage-version>
     <javax.version>7.0</javax.version>
     <mysql-driver-version>9.0.0</mysql-driver-version>
-    <jstl-version>1.2</jstl-version>
     <log4j-version>2.10.0</log4j-version>
     <jupiter-version>5.0.0</jupiter-version>
     <junit-platform-runner-version>1.0.0</junit-platform-runner-version>
     <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
     <maven-surefire-plugin-version>2.19</maven-surefire-plugin-version>
     <hibernate-version>6.4.3.Final</hibernate-version>
+    <jersey-version>2.45</jersey-version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.glassfish.jersey</groupId>
+        <artifactId>jersey-bom</artifactId>
+        <version>${jersey-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <!-- Jersey packages -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-json-binding</artifactId>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -73,11 +98,6 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>${mysql-driver-version}</version>
     </dependency>
-    <dependency>
-      <groupId>jstl</groupId>
-      <artifactId>jstl</artifactId>
-      <version>${jstl-version}</version>
-    </dependency>
     <!-- next 2 dependencies are for log4j -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -92,7 +112,7 @@
   </dependencies>
 
   <build>
-    <finalName>course-schedule-planner</finalName>
+    <finalName>course-schedule-planner-api</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
