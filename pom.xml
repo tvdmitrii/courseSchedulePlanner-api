@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.dmitriiturygin</groupId>
+  <groupId>com.turygin</groupId>
   <artifactId>course-schedule-planner-api</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
@@ -37,6 +37,13 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>com.turygin</groupId>
+      <artifactId>course-schedule-planner-api-interface</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../course-schedule-planner-api-interface/target/course-schedule-planner-api-interface-1.0-SNAPSHOT.jar</systemPath>
+    </dependency>
     <!-- Jersey packages -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>

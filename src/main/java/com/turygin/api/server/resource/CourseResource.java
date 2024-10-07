@@ -1,8 +1,8 @@
 package com.turygin.api.server.resource;
 
-import com.turygin.api.server.model.CourseDTO;
+import com.turygin.api.model.CourseDTO;
+import com.turygin.api.repository.ICourseRepository;
 import com.turygin.api.server.repository.CourseRepository;
-import com.turygin.api.server.repository.CourseRepositoryImpl;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -11,7 +11,7 @@ import java.util.List;
 @Path("/course")
 public class CourseResource {
 
-    private static final CourseRepository COURSE_REPOSITORY = new CourseRepositoryImpl();
+    private final ICourseRepository COURSE_REPOSITORY = new CourseRepository();
 
     @GET
     @Path("/{id}")
