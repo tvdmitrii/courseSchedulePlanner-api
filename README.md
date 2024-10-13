@@ -1,20 +1,26 @@
 # Course Schedule Planner
 
-This is a semester-long individual project for Enterprise Java Programming course that aims to showcase experience with Java, Java Web Development, Unit Testing, Database Design, and Hibernate Object Relational Mapping.
+This is a semester-long individual project for Enterprise Java Programming course that aims to showcase experience with Java, Java Web Development, REST API, Unit Testing, Database Design, and Hibernate Object Relational Mapping.
+
+[Demo Website](http://week6-demo-env.eba-vk39xgxr.us-east-2.elasticbeanstalk.com)
+
+## Structure
+Current repository contains database access and REST API logic. [Course Schedule Planner WebApp](https://github.com/tvdmitrii/courseSchedulePlanner-webApp) contains the WebApp that consume the REST API. [Course Schedule Planner API Interface](https://github.com/tvdmitrii/courseSchedulePlanner-interface) contains the DTO classes and resource interfaces for REST API.
 
 ## Problem Statement
 
 When it comes to scheduling, I believe that an image is worth a thousand words. My goal is to create a web application that would greatly simplify course scheduling. The user simply chooses the courses they would like to enroll into, the application loads the information about all the available class meeting times for these courses, and generates a visual representations for all the possible schedules. Instead of piecing together a dozen of "TuTh 10:30am-12:00pm" and "MW 2:00pm-4:00pm" the user just goes through the schedules one by one and chooses the one they like.
 
-
 ## Project Technologies/Techniques 
 
 * Security/Authentication
   * AWS Cognito
+* REST API
+  * Jersey
 * Database
   * MySQL 8.0
 * ORM Framework
-  * Hibernate Version TBD
+  * Hibernate Version 6.4
 * Dependency Management
   * Maven
 * CSS 
@@ -24,7 +30,7 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
 * Logging
   * Log4J2
 * Hosting
-  * AWS
+  * AWS Elastic Beanstalk
 * Unit Testing
   * JUnit tests to cover all testable logic
 * IDE: IntelliJ IDEA

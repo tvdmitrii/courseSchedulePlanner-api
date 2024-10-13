@@ -14,16 +14,19 @@
 - [x] Setup persistence package that will handle database interactions
 
 ### Week 5 - Week 6.
-- [ ] Setup REST API package that will handle the business logic
-- [ ] Setup the font-end package that will handle the UI
-- [ ] Design the database
-- [ ] Identify what kinds of requests the database must handle
+- [x] Set up REST API that will handle the business logic.
+- [x] Set up the WebApp that will handle the UI fetching the data from the REST API.
+- [x] Complete database design.
+- [x] Identify what kinds of requests the database must handle.
 
 ### Week 7. Checkpoint 2.
+- [x] DAO fully implemented.
+- [x] DAO is fully unit tested.
+- [x] REST API deployed to AWS.
+- [x] WebApp deployed to AWS.
+- [x] Updated dependencies and simplified versioning using BOM.
+- [x] Added Maven filters to separate development and production build configuration.
 
-- [ ] DAO is fully unit tested
-
- 
 ### Week 8.
 - [ ] Design the REST API
 - [ ] Identify what endpoints the REST API will require
