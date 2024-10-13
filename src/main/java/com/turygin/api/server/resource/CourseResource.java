@@ -8,6 +8,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+/**
+ * REST API resource.
+ */
 @Path("/course")
 public class CourseResource {
 
