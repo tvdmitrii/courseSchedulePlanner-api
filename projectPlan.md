@@ -28,13 +28,13 @@
 - [x] Added Maven filters to separate development and production build configuration.
 
 ### Week 8.
-- [ ] Design the REST API
-- [ ] Identify what endpoints the REST API will require
+- [ ] Implement [Course Search/Information Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#search-courses-and-view-course-information-page)
+- [ ] Implement basic authentication with Cognito.
+- [ ] Implement [Course Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#modify-courses-page).
 
  ### Week 9. Checkpoint 3.
-- [ ] Deployed to AWS
-- [ ] At least one JSP that displays data from the database is implemented
-- [ ] Authentication implemented.
+- [ ] Implement [My Courses / Cart PAge](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#my-courses-page)
+- [ ] Implement [Section Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#section-edit-overlay)
 
 ### Week 10 - 14.
 - [ ] TBD
