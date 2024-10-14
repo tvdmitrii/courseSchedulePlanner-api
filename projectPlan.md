@@ -29,14 +29,29 @@
 
 ### Week 8.
 - [ ] Implement [Course Search/Information Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#search-courses-and-view-course-information-page)
-- [ ] Implement basic authentication with Cognito.
-- [ ] Implement [Course Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#modify-courses-page).
+  - [ ] Course Search by Department
+  - [ ] Course Search by Course Title
+  - [ ] View Course Information
+- [ ] Implement authentication with Cognito.
+  - [ ] Sign Up
+  - [ ] Sign In
+  - [ ] Sign Out
 
  ### Week 9. Checkpoint 3.
-- [ ] Implement [My Courses / Cart PAge](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#my-courses-page)
+- [ ] Implement [Course Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#modify-courses-page).
+    - Edit courses
+    - Add new courses
+    - Remove courses
+- [ ] Implement [My Courses / Cart Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#my-courses-page)
+  - [ ] Add courses to cart
+  - [ ] Remove courses from cart
+  - [ ] View Course Information
+  - [ ] Choose Course Sections
+
+### Week 10
 - [ ] Implement [Section Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#section-edit-overlay)
 
-### Week 10 - 14.
+### Week 11 - 14.
 - [ ] TBD
 
 ### Week 15.

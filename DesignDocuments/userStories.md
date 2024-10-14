@@ -23,6 +23,9 @@ Any user must be able to view information about the courses (excluding the infor
 ### Sign In *
 As a registered user I must be able to sign in to add courses to "My Courses", select sections, and generate schedules.
 
+### Sign Out *
+As a registered user I must be able to sign out.
+
 ### Add Courses to "My Courses" *
 A registered user must be able to save any course to "My courses" for further section selection.
 
