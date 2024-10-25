@@ -20,7 +20,7 @@ class DepartmentDaoTest {
     private static final List<Department> DEPARTMENTS = new ArrayList<>();
     private static final List<Course> CS_COURSES = new ArrayList<>();
     private static final Dao<Department> DEPARTMENT_DAO = new Dao<>(Department.class);
-    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final CourseDao COURSE_DAO = new CourseDao();
     private static final int INITIAL_DEPARTMENT_COUNT = 5;
     private static final int INITIAL_CS_COURSE_COUNT = 3;
 

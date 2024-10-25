@@ -17,7 +17,7 @@ public class SectionDaoTest {
     private static final Logger LOG = LogManager.getLogger(SectionDaoTest.class);
     private static final List<Section> SECTIONS = new ArrayList<>();
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
-    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final CourseDao COURSE_DAO = new CourseDao();
     private static final Dao<Instructor> INSTRUCTOR_DAO = new Dao<>(Instructor.class);
     private static final int INITIAL_SECTION_COUNT = 10;
 

@@ -19,7 +19,7 @@ class UserDaoTest {
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
     private static final Dao<CartCourse> CART_COURSE_DAO = new Dao<>(CartCourse.class);
     private static final Dao<CartSection> CART_SECTION_DAO = new Dao<>(CartSection.class);
-    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final CourseDao COURSE_DAO = new CourseDao();
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
     private static final Dao<Schedule> SCHEDULE_DAO = new Dao<>(Schedule.class);
     private static final Dao<ScheduleSection> SCHEDULE_SECTION_DAO = new Dao<>(ScheduleSection.class);

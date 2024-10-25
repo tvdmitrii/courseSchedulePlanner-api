@@ -20,7 +20,7 @@ public class CourseDaoTest {
     private static final List<Course> COURSES = new ArrayList<>();
     private static final List<Section> INTRO_DB_SECTIONS = new ArrayList<>();
     private static final Dao<Department> DEPARTMENT_DAO = new Dao<>(Department.class);
-    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final CourseDao COURSE_DAO = new CourseDao();
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
     private static final int INITIAL_COURSE_COUNT = 8;
     private static final int INITIAL_INTRO_DB_SECTION_COUNT = 3;
@@ -178,6 +178,41 @@ public class CourseDaoTest {
 
         assertNotNull(foundCourses);
         assertEquals(2, foundCourses.size());
+    }
+
+    @Test
+    void findCoursesByTitleOnly() {
+        List<Course> foundCourses = COURSE_DAO.findCourses("intro",  -1);
+
+        assertEquals(2, foundCourses.size());
+    }
+
+    @Test
+    void findCoursesByDepartmentOnly() {
+        List<Course> foundCourses = COURSE_DAO.findCourses("",  2);
+
+        assertEquals(2, foundCourses.size());
+    }
+
+    @Test
+    void findCoursesByTitleAndDepartment() {
+        List<Course> foundCourses = COURSE_DAO.findCourses("comp",  3);
+
+        assertEquals(1, foundCourses.size());
+    }
+
+    @Test
+    void findCoursesWithoutParameters() {
+        List<Course> foundCourses = COURSE_DAO.findCourses("",  -1);
+
+        assertEquals(INITIAL_COURSE_COUNT, foundCourses.size());
+    }
+
+    @Test
+    void findCoursesNoResults() {
+        List<Course> foundCourses = COURSE_DAO.findCourses("xyz",  12);
+
+        assertEquals(0, foundCourses.size());
     }
 
     @Test

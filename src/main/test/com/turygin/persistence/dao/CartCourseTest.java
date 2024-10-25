@@ -18,7 +18,7 @@ public class CartCourseTest {
     private static final Logger LOG = LogManager.getLogger(CartCourseTest.class);
     private static final List<CartCourse> CART_COURSES = new ArrayList<>();
     private static final Dao<CartCourse> CART_COURSE_DAO = new Dao<>(CartCourse.class);
-    private static final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private static final CourseDao COURSE_DAO = new CourseDao();
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
     private static final int INITIAL_CART_COURSE_COUNT = 3;
 
