@@ -1,8 +1,9 @@
 package com.turygin.api.server.resource;
 
 import com.turygin.api.model.CourseBasicDTO;
+import com.turygin.api.model.CourseSearchParams;
 import com.turygin.api.resource.ICourseResource;
-import com.turygin.persistence.dao.Dao;
+import com.turygin.persistence.dao.CourseDao;
 import com.turygin.persistence.entity.Course;
 
 import javax.ws.rs.*;
@@ -16,7 +17,7 @@ import java.util.List;
 @Path("/course")
 public class CourseResource implements ICourseResource {
 
-    private final Dao<Course> COURSE_DAO = new Dao<>(Course.class);
+    private final CourseDao COURSE_DAO = new CourseDao();
 
     @GET
     @Path("/{id}")
@@ -31,6 +32,17 @@ public class CourseResource implements ICourseResource {
     @Produces({ MediaType.APPLICATION_JSON })
     public List<CourseBasicDTO> getAllCourses() {
         List<Course> courses = COURSE_DAO.getAll();
+        List<CourseBasicDTO> courseDTOs = new ArrayList<>();
+        courses.forEach(course -> courseDTOs.add(new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
+                course.getDescription(), course.getCredits())));
+        return courseDTOs;
+    }
+
+    @GET
+    @Path("/find")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<CourseBasicDTO> findCourses(@BeanParam CourseSearchParams params) {
+        List<Course> courses = COURSE_DAO.findCourses(params.getTitle(), params.getDepartmentId());
         List<CourseBasicDTO> courseDTOs = new ArrayList<>();
         courses.forEach(course -> courseDTOs.add(new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
                 course.getDescription(), course.getCredits())));
