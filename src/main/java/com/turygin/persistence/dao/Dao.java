@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class Dao<T> {
 
-    private static final Logger LOG = LogManager.getLogger(Dao.class);
-    private static final SessionFactory SESSION_FACTORY = SessionFactoryProvider.getSessionFactory();
+    protected static final Logger LOG = LogManager.getLogger(Dao.class);
+    protected static final SessionFactory SESSION_FACTORY = SessionFactoryProvider.getSessionFactory();
 
-    private final Class<T> ENTITY_CLASS;
+    protected final Class<T> ENTITY_CLASS;
 
     /**
      * Constructor that stores object's class for use with Hibernate.
@@ -127,7 +127,7 @@ public class Dao<T> {
         HibernateCriteriaBuilder b = session.getCriteriaBuilder();
         JpaCriteriaQuery<T> q = b.createQuery(ENTITY_CLASS);
         Root<T> root = q.from(ENTITY_CLASS);
-        q.select(root).where(b.like(root.get(property), String.format("%%%s%%", value)));
+        q.select(root).where(b.like(b.lower(root.get(property)), String.format("%%%s%%", value.toLowerCase())));
 
         List<T> entities = session.createQuery(q).getResultList();
         LOG.debug("Found {} entities.", entities.size());
