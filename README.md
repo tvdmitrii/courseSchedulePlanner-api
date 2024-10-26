@@ -13,16 +13,21 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
 
 ## Project Technologies/Techniques 
 
-* Security/Authentication
-  * AWS Cognito
+* Platform
+  * JDK 21 
+  * Jakarta EE 10
+  * Jakarta Servlet 6.0
+  * JSTL 3.0
 * REST API
-  * Jersey
-* Database
-  * MySQL 8.0
+  * Jersey 3.1
 * ORM Framework
   * Hibernate Version 6.4
+* Database
+  * MySQL 8.0
 * Dependency Management
   * Maven
+* Security/Authentication
+  * AWS Cognito
 * CSS 
   * Bootstrap
 * Data Validation
@@ -32,7 +37,7 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
 * Hosting
   * AWS Elastic Beanstalk
 * Unit Testing
-  * JUnit tests to cover all testable logic
+  * JUnit 5 tests to cover all testable logic
 * IDE: IntelliJ IDEA
 
 ## Design
