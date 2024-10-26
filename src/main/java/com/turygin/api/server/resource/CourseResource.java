@@ -7,8 +7,8 @@ import com.turygin.persistence.entity.Course;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,15 +11,16 @@
   <properties>
     <env>dev</env>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <jersey.version>3.1.9</jersey.version>
     <junit.version>5.11.2</junit.version>
-    <jersey.version>2.45</jersey.version>
     <log4j.version>2.24.1</log4j.version>
     <hibernate.version>6.4.10.Final</hibernate.version>
-    <javax.version>7.0</javax.version>
-    <mysql.driver.version>9.0.0</mysql.driver.version>
-    <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
-    <maven-surefire-plugin-version>2.19</maven-surefire-plugin-version>
+    <mysql.driver.version>9.1.0</mysql.driver.version>
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+    <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+    <maven.surefire.plugin.version>3.5.1</maven.surefire.plugin.version>
   </properties>
 
   <profiles>
@@ -81,7 +82,7 @@
     <!-- Jersey REST API packages. -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-servlet-core</artifactId>
+      <artifactId>jersey-container-servlet</artifactId>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
@@ -97,12 +98,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
-    </dependency>
-    <!-- Java EE packages. -->
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
-      <version>${javax.version}</version>
     </dependency>
     <!-- log4j logging packages. -->
     <dependency>
@@ -148,11 +143,20 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin-version}</version>
+          <version>${maven.compiler.plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${maven.war.plugin.version}</version>
+          <configuration>
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin-version}</version>
+          <version>${maven.surefire.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
