@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 class UserDaoTest {
@@ -74,7 +75,8 @@ class UserDaoTest {
 
     @Test
     void insert() {
-        User newUser = new User("Another", "Person", "another.person@example.com", User.Type.USER);
+        User newUser = new User("Another", "Person", "another.person@example.com",
+                "aperson", UUID.randomUUID(), User.Type.USER);
 
         USER_DAO.insert(newUser);
         User user = USER_DAO.getById(newUser.getId());
@@ -86,7 +88,18 @@ class UserDaoTest {
     void insert_DuplicateEmail() {
         User user3 = USERS.get(2);
 
-        User newUser = new User(user3.getFirstName(), user3.getLastName(), user3.getEmail(), user3.getRole());
+        User newUser = new User(user3.getFirstName(), user3.getLastName(), user3.getEmail(), user3.getUsername(),
+                UUID.randomUUID(), user3.getRole());
+
+        assertThrows(ConstraintViolationException.class, () -> USER_DAO.insert(newUser));
+    }
+
+    @Test
+    void insert_DuplicateUUID() {
+        User user3 = USERS.get(2);
+
+        User newUser = new User(user3.getFirstName(), user3.getLastName(), "", user3.getUsername(),
+                user3.getUuid(), user3.getRole());
 
         assertThrows(ConstraintViolationException.class, () -> USER_DAO.insert(newUser));
     }

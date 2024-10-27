@@ -49,6 +49,8 @@ CREATE TABLE `user` (
     `first_name` varchar(64) NOT NULL,
     `last_name` varchar(64) NOT NULL,
     `email` varchar(128) NOT NULL,
+    `username` varchar(128) NOT NULL,
+    `uuid` binary(16) NOT NULL,
     `role` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );
@@ -109,6 +111,7 @@ ALTER TABLE `department` ADD UNIQUE `uq_department_name`(`name`);
 ALTER TABLE `department` ADD UNIQUE `uq_department_code`(`code`);
 ALTER TABLE `instructor` ADD UNIQUE `uq_instructor_name`(`first_name`,`last_name`);
 ALTER TABLE `user` ADD UNIQUE `uq_user_email`(`email`);
+ALTER TABLE `user` ADD UNIQUE `uq_user_uuid`(`uuid`);
 
 -- Checks
 ALTER TABLE `section` ADD CONSTRAINT `section_valid_days_mask` CHECK (`days_of_week` < 32);

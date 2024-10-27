@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A class representing a user.
@@ -32,6 +33,12 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "uuid")
+    private UUID uuid;
+
     @Column(name = "role")
     private Type role;
 
@@ -54,12 +61,16 @@ public class User {
      * @param firstName the first name
      * @param lastName  the last name
      * @param email     the email
+     * @param username  the username
+     * @param uuid      unique cognito uuid
      * @param role      the role
      */
-    public User(String firstName, String lastName, String email, Type role) {
+    public User(String firstName, String lastName, String email, String username, UUID uuid, Type role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.uuid = uuid;
         this.role = role;
     }
 
@@ -238,6 +249,39 @@ public class User {
     }
 
     /**
+     * Gets username.
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Sets username.
+     * @param username the username
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Gets uuid.
+     * @return the uuid
+     */
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    /**
+     * Sets uuid.
+     *
+     * @param uuid the uuid
+     */
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    /**
      * Performs deep equality comparison.
      * @param o object to compare to
      * @return true if all fields of the object are equal, false otherwise.
@@ -254,6 +298,8 @@ public class User {
         return Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(uuid, user.uuid) &&
                 role == user.role;
     }
 
@@ -263,6 +309,6 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, role);
+        return Objects.hash(firstName, lastName, email, username, uuid, role);
     }
 }
