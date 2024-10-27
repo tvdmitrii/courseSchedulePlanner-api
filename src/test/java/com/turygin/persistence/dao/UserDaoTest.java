@@ -63,10 +63,10 @@ class UserDaoTest {
 
     @Test
     void update() {
-        String newLastName = "Thompson";
+        User.Type newRole = User.Type.ADMIN;
         User user2 = USERS.get(1);
 
-        user2.setLastName(newLastName);
+        user2.setRole(newRole);
         USER_DAO.update(user2);
         User user = USER_DAO.getById(user2.getId());
 
@@ -75,8 +75,7 @@ class UserDaoTest {
 
     @Test
     void insert() {
-        User newUser = new User("Another", "Person", "another.person@example.com",
-                "aperson", UUID.randomUUID(), User.Type.USER);
+        User newUser = new User(UUID.randomUUID(), User.Type.USER);
 
         USER_DAO.insert(newUser);
         User user = USER_DAO.getById(newUser.getId());
@@ -85,21 +84,10 @@ class UserDaoTest {
     }
 
     @Test
-    void insert_DuplicateEmail() {
-        User user3 = USERS.get(2);
-
-        User newUser = new User(user3.getFirstName(), user3.getLastName(), user3.getEmail(), user3.getUsername(),
-                UUID.randomUUID(), user3.getRole());
-
-        assertThrows(ConstraintViolationException.class, () -> USER_DAO.insert(newUser));
-    }
-
-    @Test
     void insert_DuplicateUUID() {
         User user3 = USERS.get(2);
 
-        User newUser = new User(user3.getFirstName(), user3.getLastName(), "", user3.getUsername(),
-                user3.getUuid(), user3.getRole());
+        User newUser = new User(user3.getUuid(), user3.getRole());
 
         assertThrows(ConstraintViolationException.class, () -> USER_DAO.insert(newUser));
     }
@@ -129,14 +117,15 @@ class UserDaoTest {
     }
 
     @Test
-    void getByPropertyEquals_String() {
+    void getByPropertyEquals_Uuid() {
         User user1 = USERS.get(0);
-        List<User> foundUsers = USER_DAO.getByPropertyEquals("firstName", user1.getFirstName());
+        List<User> foundUsers = USER_DAO.getByPropertyEquals("uuid", user1.getUuid());
 
         assertNotNull(foundUsers);
         assertEquals(1, foundUsers.size());
         assertEquals(user1, foundUsers.get(0));
     }
+
 
     @Test
     void getByPropertyEquals_Long() {
@@ -153,14 +142,6 @@ class UserDaoTest {
         List<User> foundUsers = USER_DAO.getByPropertyEquals("id", 1000);
 
         assertEquals(0, foundUsers.size());
-    }
-
-    @Test
-    void getByPropertySubstring() {
-        List<User> foundUsers = USER_DAO.getByPropertySubstring("lastName", "in");
-
-        assertNotNull(foundUsers);
-        assertEquals(2, foundUsers.size());
     }
 
     @Test

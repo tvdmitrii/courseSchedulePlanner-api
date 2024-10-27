@@ -46,10 +46,6 @@ CREATE TABLE `section` (
 
 CREATE TABLE `user` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `first_name` varchar(64) NOT NULL,
-    `last_name` varchar(64) NOT NULL,
-    `email` varchar(128) NOT NULL,
-    `username` varchar(128) NOT NULL,
     `uuid` binary(16) NOT NULL,
     `role` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
@@ -110,7 +106,6 @@ ALTER TABLE `course` ADD UNIQUE `uq_course_department_number`(`department_id`,`n
 ALTER TABLE `department` ADD UNIQUE `uq_department_name`(`name`);
 ALTER TABLE `department` ADD UNIQUE `uq_department_code`(`code`);
 ALTER TABLE `instructor` ADD UNIQUE `uq_instructor_name`(`first_name`,`last_name`);
-ALTER TABLE `user` ADD UNIQUE `uq_user_email`(`email`);
 ALTER TABLE `user` ADD UNIQUE `uq_user_uuid`(`uuid`);
 
 -- Checks
@@ -122,13 +117,13 @@ ALTER TABLE `user` ADD CONSTRAINT `user_valid_role` CHECK (`role` < 2);
 CREATE INDEX `idx_course_title` ON `course` (`title`);
 
 INSERT INTO `user`
-(`id`, `first_name`, `last_name`, `email`, `username`, `uuid`, `role`)
+(`id`, `uuid`, `role`)
 VALUES
-(1, "Phyllis", "Martin", "phyllis.martin@example.com", "pmartin", UUID_TO_BIN("9f35ca68-93fb-4313-a7b6-10d3e56061ca"), 0),
-(2, "Lucas", "Hawkins", "lucas.hawkins@example.com", "lhawkins", UUID_TO_BIN("dd94b969-c41d-45fe-a88b-2623be98fedb"), 0),
-(3, "Charlene", "Williamson", "charlene.williamson@example.com", "cwilliamson", UUID_TO_BIN("751902d7-644e-4e2f-9295-31abc63d6f03"), 0),
-(4, "Gene", "Hughes", "gene.hughes@example.com", "ghughes", UUID_TO_BIN("c403ea27-aabc-442c-bd38-6fe24c67f6e0"), 1),
-(5, "Unused", "User", "unused.user@example.com", "uuser", UUID_TO_BIN("dc761622-f01d-417a-932f-82a1edaad598"), 0);
+(1, UUID_TO_BIN("9f35ca68-93fb-4313-a7b6-10d3e56061ca"), 0),
+(2, UUID_TO_BIN("dd94b969-c41d-45fe-a88b-2623be98fedb"), 0),
+(3, UUID_TO_BIN("751902d7-644e-4e2f-9295-31abc63d6f03"), 0),
+(4, UUID_TO_BIN("c403ea27-aabc-442c-bd38-6fe24c67f6e0"), 1),
+(5, UUID_TO_BIN("dc761622-f01d-417a-932f-82a1edaad598"), 0);
 
 
 INSERT INTO `instructor`

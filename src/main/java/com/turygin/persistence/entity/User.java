@@ -24,19 +24,7 @@ public class User {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "uuid")
+    @Column(name = "uuid", unique = true)
     private UUID uuid;
 
     @Column(name = "role")
@@ -58,56 +46,12 @@ public class User {
     /**
      * Instantiates a new User.
      *
-     * @param firstName the first name
-     * @param lastName  the last name
-     * @param email     the email
-     * @param username  the username
      * @param uuid      unique cognito uuid
      * @param role      the role
      */
-    public User(String firstName, String lastName, String email, String username, UUID uuid, Type role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
+    public User(UUID uuid, Type role) {
         this.uuid = uuid;
         this.role = role;
-    }
-
-    /**
-     * Gets email.
-     *
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets email.
-     *
-     * @param email the email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets first name.
-     *
-     * @return the first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Sets first name.
-     *
-     * @param firstName the first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     /**
@@ -117,24 +61,6 @@ public class User {
      */
     public long getId() {
         return id;
-    }
-
-    /**
-     * Gets last name.
-     *
-     * @return the last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets last name.
-     *
-     * @param lastName the last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     /**
@@ -153,15 +79,6 @@ public class User {
      */
     public void setRole(Type role) {
         this.role = role;
-    }
-
-    /**
-     * Gets full name.
-     *
-     * @return the full name
-     */
-    public String getFullName() {
-        return String.format("%s %s", firstName, lastName);
     }
 
     /**
@@ -240,28 +157,10 @@ public class User {
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("id=").append(id);
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", uuid='").append(uuid.toString()).append('\'');
         sb.append(", role=").append(role);
         sb.append('}');
         return sb.toString();
-    }
-
-    /**
-     * Gets username.
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Sets username.
-     * @param username the username
-     */
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     /**
@@ -295,11 +194,7 @@ public class User {
         // Now we can safely cast Object to User
         User user = (User) o;
         // Objects.equals checks for null before calling .equals()
-        return Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(uuid, user.uuid) &&
+        return Objects.equals(uuid, user.uuid) &&
                 role == user.role;
     }
 
@@ -309,6 +204,6 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, username, uuid, role);
+        return Objects.hash(uuid, role);
     }
 }

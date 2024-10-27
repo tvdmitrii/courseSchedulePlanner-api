@@ -13,19 +13,13 @@ class UserTest {
 
     @BeforeEach
     void populateUsers() {
-        user1 = new User("John", "Smith", "john.smith@example.com", "jsmith", UUID.randomUUID(), User.Type.USER);
-        user2 = new User("Kyle", "Thompson", "kyle.thompson@example.com", "kthompson", UUID.randomUUID(), User.Type.ADMIN);
-    }
-
-    @Test
-    void getFullName() {
-        assertEquals("John Smith", user1.getFullName());
+        user1 = new User(UUID.randomUUID(), User.Type.USER);
+        user2 = new User(UUID.randomUUID(), User.Type.ADMIN);
     }
 
     @Test
     void testEqualsSameUser() {
-        User sameUser = new User(user1.getFirstName(), user1.getLastName(), user1.getEmail(),
-                user1.getUsername(), user1.getUuid(), user1.getRole());
+        User sameUser = new User(user1.getUuid(), user1.getRole());
 
         assertEquals(user1, sameUser);
     }
@@ -37,8 +31,7 @@ class UserTest {
 
     @Test
     void testHashCodeSameUser() {
-        User sameUser = new User(user1.getFirstName(), user1.getLastName(), user1.getEmail(),
-                user1.getUsername(), user1.getUuid(), user1.getRole());
+        User sameUser = new User(user1.getUuid(), user1.getRole());
 
         assertEquals(user1.hashCode(), sameUser.hashCode());
     }
