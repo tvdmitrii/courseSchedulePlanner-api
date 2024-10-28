@@ -36,8 +36,27 @@
 
 ### Week 7 - (10/07/2024 - 10/13/2024) - ~ 15 hours
 - Split the project into three repositories: WebApp, REST API, API interface.
-- Implement REST API server using.
-- Implement REST API client using.
+- Implement REST API server with Jersey.
+- Implement REST API client with Jersey.
 - Added Maven filters to manage development and production builds.
 - Set up AWS Elastic Beanstalk environment for hosting the database, REST API, and WebApp.
 - Deploy the database, REST API, and WebApp to AWS.
+
+### Week 8 - (10/14/2024 - 10/20/2024) - ~ 15 hours
+- Set up the HTML/CSS template for how the website will look like.
+- Implemented one of the main pages that handles course browsing and search
+
+### Week 9 - (10/21/2024 - 10/27/2024) - ~ 20 hours
+- AWS Elastic Beanstalk retired Tomcat 8 which prompted an upgrade that has been long on my mind.
+  - Java 11 -> Java 21 LTS
+  - Tomcat 8 -> Tomcat 10.1
+  - Java EE 7 -> Jakarta EE 10
+  - JSTL 1.2 -> JSTL 3.0
+  - Jersey 2.45 -> Jersey 3.1.9
+  - Other minor updates
+- Rolled out new Tomcat 10.1 environment on AWS EBS.
+- Enabled HTTPs for the EBS environment to work with Cognito.
+- Added course search by department and/or title functionality to course DAO and REST API.
+- Updated database design to store user UUID from Cognito, but remove all other personally identifiable information.
+- Added REST API user endpoint to handle new user creation and user search by UUID.
+- Implemented proof of concept Cognito authentication integration. The provided code was significantly reworked to take advantage of Jersey Client for fetching user token and com.auth0 libraries for token parsing and validation.

@@ -28,31 +28,44 @@
 - [x] Added Maven filters to separate development and production build configuration.
 
 ### Week 8.
-- [ ] Implement [Course Search/Information Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#search-courses-and-view-course-information-page)
-  - [ ] Course Search by Department
-  - [ ] Course Search by Course Title
-  - [ ] View Course Information
-- [ ] Implement authentication with Cognito.
+- [X] Implement [Course Search/Information Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#search-courses-and-view-course-information-page)
+  - [X] Course Search by Department
+  - [X] Course Search by Course Title
+  - [X] View Course Information
+
+### Week 9. Checkpoint 3.
+- [X] Upgrade the framework
+  - [X] Java 21
+  - [X] Tomcat 10.1
+  - [X] Jakarta EE 10
+- [X] Implement authentication with Cognito.
+  - [X] Enable HTTPs on Elastic Beanstalk
+  - [X] Implement proof of concept authentication
+
+### Week 10.
+- [ ] Finish implementing authentication user stories.
   - [ ] Sign Up
   - [ ] Sign In
   - [ ] Sign Out
 
- ### Week 9. Checkpoint 3.
-- [ ] Implement [Course Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#modify-courses-page).
-    - Edit courses
-    - Add new courses
-    - Remove courses
-- [ ] Implement [My Courses / Cart Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#my-courses-page)
-  - [ ] Add courses to cart
-  - [ ] Remove courses from cart
-  - [ ] View Course Information
-  - [ ] Choose Course Sections
+### Week 11.
+- [ ] Implement viewing and choosing course sections
+- [ ] Implement adding courses to "My Courses"
+- [ ] Implement remove courses from "My Courses"
 
-### Week 10
-- [ ] Implement [Section Editing Page](https://github.com/tvdmitrii/courseSchedulePlanner-api/blob/main/DesignDocuments/screens.md#section-edit-overlay)
+### Week 12.
+- [ ] Implement schedule generation
+- [ ] Implement schedule viewing
 
-### Week 11 - 14.
-- [ ] TBD
+### Week 13.
+- [ ] Implement adding courses for admins
+- [ ] Implement editing courses for admins
+- [ ] Implement removing courses for admins
+
+### Week 14.
+- [ ] Implement adding section for admins
+- [ ] Implement editing section for admins
+- [ ] Implement removing section for admins
 
 ### Week 15.
 - [ ] Implement Feedback from Week 14 review
