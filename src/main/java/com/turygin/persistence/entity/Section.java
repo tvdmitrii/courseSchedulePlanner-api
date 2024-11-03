@@ -15,11 +15,11 @@ import java.util.Objects;
 public class Section {
 
     public enum Day {
-        MONDAY((byte) 1, "Monday"),
-        TUESDAY((byte) 2, "Tuesday"),
-        WEDNESDAY((byte) 4, "Wednesday"),
-        THURSDAY((byte) 8, "Thursday"),
-        FRIDAY((byte) 16, "Friday");
+        MONDAY((byte) 1, "M"),
+        TUESDAY((byte) 2, "Tu"),
+        WEDNESDAY((byte) 4, "W"),
+        THURSDAY((byte) 8, "Th"),
+        FRIDAY((byte) 16, "F");
 
         public final byte value;
         public final String name;
@@ -96,6 +96,16 @@ public class Section {
         return daysOfWeek;
     }
 
+    public String getDaysOfWeekString() {
+        List<String> matchingDays = new ArrayList<>();
+        for(Day day : Day.values()) {
+            if((daysOfWeek & day.value) != 0 ) {
+                matchingDays.add(day.name);
+            }
+        }
+        return String.join(", ", matchingDays);
+    }
+
     /**
      * Sets days of week.
      * @param daysOfWeek the days of week
@@ -169,15 +179,7 @@ public class Section {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Section{");
         sb.append("id=").append(id);
-
-        List<String> matchingDays = new ArrayList<>();
-        for(Day day : Day.values()) {
-            if((daysOfWeek & day.value) != 0 ) {
-                matchingDays.add(day.name);
-            }
-        }
-        sb.append(", daysOfWeek={").append(String.join(",", matchingDays)).append("}");
-
+        sb.append(", daysOfWeek={").append(getDaysOfWeekString()).append("}");
         sb.append(", fromTime='").append(fromTime).append('\'');
         sb.append(", toTime='").append(toTime).append('\'');
         sb.append(", instructor=").append(instructor.toString());
