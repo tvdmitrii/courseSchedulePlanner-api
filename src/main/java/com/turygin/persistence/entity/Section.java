@@ -3,6 +3,8 @@ package com.turygin.persistence.entity;
 import jakarta.persistence.*;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +15,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "section")
 public class Section {
+
+    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm a");
 
     public enum Day {
         MONDAY((byte) 1, "M"),
@@ -96,7 +100,11 @@ public class Section {
         return daysOfWeek;
     }
 
-    public String getDaysOfWeekString() {
+    /**
+     * Provides a convenient "M, W, F" representation of section meeting days.
+     * @return section meeting days
+     */
+    public String getMeetingDaysString() {
         List<String> matchingDays = new ArrayList<>();
         for(Day day : Day.values()) {
             if((daysOfWeek & day.value) != 0 ) {
@@ -104,6 +112,14 @@ public class Section {
             }
         }
         return String.join(", ", matchingDays);
+    }
+
+    /**
+     * Provides a convenient "09:00 AM to 12:00 PM" representation of section period.
+     * @return section period time
+     */
+    public String getMeetingTimesString() {
+        return String.format("%s to %s", TIME_FORMAT.format(fromTime), TIME_FORMAT.format(toTime));
     }
 
     /**
@@ -179,9 +195,8 @@ public class Section {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Section{");
         sb.append("id=").append(id);
-        sb.append(", daysOfWeek={").append(getDaysOfWeekString()).append("}");
-        sb.append(", fromTime='").append(fromTime).append('\'');
-        sb.append(", toTime='").append(toTime).append('\'');
+        sb.append(", daysOfWeek={").append(getMeetingDaysString()).append("}");
+        sb.append(", meetingTimes={").append(getMeetingTimesString()).append("}");
         sb.append(", instructor=").append(instructor.toString());
         sb.append(", course=").append(course.toString());
         sb.append('}');
