@@ -4,9 +4,7 @@ import com.turygin.api.model.CourseBasicDTO;
 import com.turygin.api.model.CourseWithSectionsDTO;
 import com.turygin.api.model.DepartmentBasicDTO;
 import com.turygin.api.model.SectionDTO;
-import com.turygin.persistence.entity.Course;
-import com.turygin.persistence.entity.Department;
-import com.turygin.persistence.entity.Section;
+import com.turygin.persistence.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class Mapper {
 
     public static SectionDTO mapToSection(Section section) {
         return section != null ? new SectionDTO(section.getId(), section.getMeetingDaysString(),
-                section.getMeetingTimesString(), section.getInstructor().toString()) : null;
+                section.getMeetingTimesString(), section.getInstructor().getFullName()) : null;
     }
 
     public static List<SectionDTO> mapToSection(List<Section> sections) {
@@ -55,12 +53,25 @@ public class Mapper {
         return sectionDTOList;
     }
 
-    public static List<CourseWithSectionsDTO> mapToCourseWithSections(List<Course> courses) {
+    public static SectionDTO mapCartSectionToSection(CartSection cartSection) {
+        return cartSection != null ? mapToSection(cartSection.getSection()) : null;
+    }
+
+    public static List<SectionDTO> mapCartSectionToSection(List<CartSection> sections) {
+        List<SectionDTO> sectionDTOList = new ArrayList<>();
+        for (CartSection cs : sections) {
+            if (cs == null) continue;
+            sectionDTOList.add(mapCartSectionToSection(cs));
+        }
+        return sectionDTOList;
+    }
+
+    public static List<CourseWithSectionsDTO> mapToCourseWithSections(List<CartCourse> courses) {
         List<CourseWithSectionsDTO> courseDTOs = new ArrayList<>();
-        for (Course c : courses) {
-            if (c == null) continue;
-            CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(mapToCourseBasic(c));
-            List<SectionDTO> sectionDTOList = mapToSection(c.getSections());
+        for (CartCourse cc : courses) {
+            if (cc == null) continue;
+            CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(mapToCourseBasic(cc.getCourse()));
+            List<SectionDTO> sectionDTOList = mapCartSectionToSection(cc.getSections());
             courseWithSectionsDTO.setSections(sectionDTOList);
             courseDTOs.add(courseWithSectionsDTO);
         }

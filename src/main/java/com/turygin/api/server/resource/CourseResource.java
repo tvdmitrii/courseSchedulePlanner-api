@@ -9,9 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * REST API course resource.
