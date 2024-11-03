@@ -26,20 +26,13 @@ public class DepartmentResource implements IDepartmentResource {
     @Produces({ MediaType.APPLICATION_JSON })
     public DepartmentBasicDTO getDepartment(@PathParam("id") long id) {
         Department department = DEPARTMENT_DAO.getById(id);
-        DepartmentBasicDTO departmentDTO = null;
-        if (department != null) {
-            departmentDTO = new DepartmentBasicDTO(department.getId(), department.getCode(), department.getName());
-        }
-        return departmentDTO;
+        return Mapper.mapToDepartmentBasic(department);
     }
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
     public List<DepartmentBasicDTO> getAllDepartments() {
         List<Department> departments = DEPARTMENT_DAO.getAll();
-        List<DepartmentBasicDTO> departmentDTOs = new ArrayList<>();
-        departments.forEach(department -> departmentDTOs.add(
-                new DepartmentBasicDTO(department.getId(), department.getCode(), department.getName())));
-        return departmentDTOs;
+        return Mapper.mapToDepartmentBasic(departments);
     }
 }

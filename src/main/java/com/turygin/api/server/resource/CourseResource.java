@@ -11,6 +11,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST API course resource.
@@ -27,22 +28,14 @@ public class CourseResource implements ICourseResource {
     @Produces({ MediaType.APPLICATION_JSON })
     public CourseBasicDTO getCourse(@PathParam("id") long id) {
         Course course = COURSE_DAO.getById(id);
-        CourseBasicDTO courseDTO = null;
-        if (course != null) {
-            courseDTO = new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
-                    course.getDescription(), course.getCredits());
-        }
-        return courseDTO;
+        return Mapper.mapToCourseBasic(course);
     }
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
     public List<CourseBasicDTO> getAllCourses() {
         List<Course> courses = COURSE_DAO.getAll();
-        List<CourseBasicDTO> courseDTOs = new ArrayList<>();
-        courses.forEach(course -> courseDTOs.add(new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
-                course.getDescription(), course.getCredits())));
-        return courseDTOs;
+        return Mapper.mapToCourseBasic(courses);
     }
 
     @GET
@@ -51,9 +44,6 @@ public class CourseResource implements ICourseResource {
     public List<CourseBasicDTO> findCourses(@QueryParam("title") String title, @QueryParam("departmentId") long departmentId) {
         LOG.debug("Received title '{}' and departmentId '{}'", title, departmentId);
         List<Course> courses = COURSE_DAO.findCourses(title, departmentId);
-        List<CourseBasicDTO> courseDTOs = new ArrayList<>();
-        courses.forEach(course -> courseDTOs.add(new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
-                course.getDescription(), course.getCredits())));
-        return courseDTOs;
+        return Mapper.mapToCourseBasic(courses);
     }
 }
