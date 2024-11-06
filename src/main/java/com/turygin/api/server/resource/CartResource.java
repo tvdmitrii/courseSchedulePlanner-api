@@ -21,6 +21,7 @@ public class CartResource implements ICartResourse {
     protected static final Logger LOG = LogManager.getLogger(CartResource.class);
 
     private final Dao<User> USER_DAO = new Dao<>(User.class);
+    private final CourseDao COURSE_DAO = new CourseDao();
 
     @GET
     @Path("/{userId}")
@@ -31,14 +32,60 @@ public class CartResource implements ICartResourse {
         return Mapper.courseToCourseWithSections(cartCourses);
     }
 
-    @Override
-    public void cartAddCourseToCart(long l, long l1) {
+    @POST
+    @Path("{userId}/course/{courseId}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public void cartAddCourseToCart(@PathParam("userId") long userId,
+                                                     @PathParam("courseId") long courseId) {
+        LOG.debug("Accepted request with userId '{}', courseId '{}'", userId, courseId);
+        User user = USER_DAO.getById(userId);
+        List<CartCourse> cartCourses = user.getCoursesInCart();
 
+        // Check if course is already in cart
+        CartCourse newCourse = null;
+        for(CartCourse cartCourse : cartCourses) {
+            if (cartCourse.getCourse().getId() == courseId) {
+                newCourse = cartCourse;
+                break;
+            }
+        }
+
+        // Skip if course is already in cart
+        if (newCourse == null) {
+            LOG.debug("Course not found in cart. Adding.");
+            Course courseToAdd = COURSE_DAO.getById(courseId);
+            // Make sure course exists
+            if (courseToAdd != null) {
+                user.addCourseToCart(new CartCourse(user, courseToAdd));
+                USER_DAO.update(user);
+                LOG.debug("Added new course.");
+            }
+        }
     }
 
-    @Override
-    public void cartRemoveCourse(long l, long l1) {
+    @DELETE
+    @Path("{userId}/course/{courseId}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public void cartRemoveCourse(@PathParam("userId") long userId, @PathParam("courseId") long courseId) {
+        LOG.debug("Accepted request with userId '{}', courseId '{}'", userId, courseId);
+        User user = USER_DAO.getById(userId);
+        List<CartCourse> cartCourses = user.getCoursesInCart();
 
+        // Find course in cart
+        int courseListId = -1;
+        for(int i = 0; i < cartCourses.size(); i++) {
+            if (cartCourses.get(i).getCourse().getId() == courseId) {
+                courseListId = i;
+                break;
+            }
+        }
+
+        // Remove and update if found
+        if (courseListId != -1) {
+            LOG.debug("Found course in cart. Removing.");
+            cartCourses.remove(courseListId);
+            USER_DAO.update(user);
+        }
     }
 
     @PUT
@@ -57,13 +104,16 @@ public class CartResource implements ICartResourse {
         for(CartCourse cartCourse : cartCourses) {
             if (cartCourse.getCourse().getId() == courseId) {
                 currentCourse = cartCourse;
+                break;
             }
         }
+
+        // Make sure course was found in cart
         if (currentCourse == null) {
             return null;
         }
-
         LOG.debug("Found course in cart.");
+
         // Get all available course sections
         Map<Long,Section> allSections = new HashMap<>();
         for(Section s : currentCourse.getCourse().getSections()) {
@@ -92,6 +142,7 @@ public class CartResource implements ICartResourse {
         for(CartCourse cartCourse : user.getCoursesInCart()) {
             if (cartCourse.getCourse().getId() == courseId) {
                 currentCourse = cartCourse;
+                break;
             }
         }
 
