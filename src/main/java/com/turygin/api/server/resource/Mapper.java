@@ -6,8 +6,7 @@ import com.turygin.api.model.DepartmentBasicDTO;
 import com.turygin.api.model.SectionDTO;
 import com.turygin.persistence.entity.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Mapper {
 
@@ -44,37 +43,76 @@ public class Mapper {
                 section.getMeetingTimesString(), section.getInstructor().getFullName()) : null;
     }
 
-    public static List<SectionDTO> mapToSection(List<Section> sections) {
-        List<SectionDTO> sectionDTOList = new ArrayList<>();
+    public static SortedMap<Long,SectionDTO> mapToSection(List<Section> sections) {
+        SortedMap<Long,SectionDTO> sectionMap = new TreeMap<>();
         for (Section s : sections) {
             if (s == null) continue;
-            sectionDTOList.add(mapToSection(s));
+            sectionMap.put(s.getId(), mapToSection(s));
         }
-        return sectionDTOList;
+        return sectionMap;
+    }
+
+    public static CartSection sectionToCartSection(CartCourse cartCourse, Section section) {
+        return section != null ? new CartSection(cartCourse, section) : null;
+    }
+
+    public static List<CartSection> sectionToCartSection(CartCourse cartCourse, List<Section> sections) {
+        List<CartSection> sectionList = new ArrayList<>();
+        for (Section s : sections) {
+            if (s == null) continue;
+            sectionList.add(sectionToCartSection(cartCourse, s));
+        }
+        return sectionList;
     }
 
     public static SectionDTO mapCartSectionToSection(CartSection cartSection) {
         return cartSection != null ? mapToSection(cartSection.getSection()) : null;
     }
 
-    public static List<SectionDTO> mapCartSectionToSection(List<CartSection> sections) {
-        List<SectionDTO> sectionDTOList = new ArrayList<>();
+    public static SortedMap<Long,SectionDTO> mapCartSectionToSection(List<CartSection> sections) {
+        SortedMap<Long,SectionDTO> sectionMap = new TreeMap<>();
         for (CartSection cs : sections) {
             if (cs == null) continue;
-            sectionDTOList.add(mapCartSectionToSection(cs));
+            SectionDTO mappedSection = mapCartSectionToSection(cs);
+            sectionMap.put(mappedSection.getId(), mappedSection);
         }
-        return sectionDTOList;
+        return sectionMap;
     }
 
-    public static List<CourseWithSectionsDTO> mapToCourseWithSections(List<CartCourse> courses) {
+    public static CourseWithSectionsDTO mapToCourseWithAllSections(Course course) {
+        if (course == null) return null;
+        CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(mapToCourseBasic(course));
+        SortedMap<Long,SectionDTO> allSectionsMap = mapToSection(course.getSections());
+        courseWithSectionsDTO.setSections(allSectionsMap);
+        return courseWithSectionsDTO;
+    }
+
+    public static List<CourseWithSectionsDTO> courseToCourseWithSections(List<CartCourse> courses) {
         List<CourseWithSectionsDTO> courseDTOs = new ArrayList<>();
         for (CartCourse cc : courses) {
             if (cc == null) continue;
-            CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(mapToCourseBasic(cc.getCourse()));
-            List<SectionDTO> sectionDTOList = mapCartSectionToSection(cc.getSections());
-            courseWithSectionsDTO.setSections(sectionDTOList);
-            courseDTOs.add(courseWithSectionsDTO);
+            courseDTOs.add(courseToCourseWithSections(cc));
         }
         return courseDTOs;
     }
+
+    public static CourseWithSectionsDTO courseToCourseWithSections(CartCourse course) {
+        if (course == null) {
+            return null;
+        }
+        // Get course with all available sections unselected.
+        CourseWithSectionsDTO mappedCourse = mapToCourseWithAllSections(course.getCourse());
+        // Load all sections that user has in their cart
+        SortedMap<Long,SectionDTO> selectedSections = mapCartSectionToSection(course.getSections());
+        // Mark selected sections as such
+        SortedMap<Long,SectionDTO> allSections = mappedCourse.getSections();
+        for (Long sectionId : selectedSections.keySet()) {
+            SectionDTO currentSection = allSections.get(sectionId);
+            if (currentSection != null) {
+                currentSection.setIsSelected(true);
+            }
+        }
+        return mappedCourse;
+    }
+
 }
