@@ -12,7 +12,7 @@ public class Mapper {
 
     public static CourseBasicDTO mapToCourseBasic(Course course) {
         return course != null ? new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
-                course.getDescription(), course.getCredits()) : null;
+                course.getDescription(), course.getCredits(), course.getDepartment().getId(), course.getNumber()) : null;
     }
 
     public static List<CourseBasicDTO> mapToCourseBasic(List<Course> courses) {
@@ -113,6 +113,12 @@ public class Mapper {
             }
         }
         return mappedCourse;
+    }
+
+    public static Course courseDTOToCourse(CourseBasicDTO courseBasicDTO) {
+        return courseBasicDTO != null ?
+                new Course(courseBasicDTO.getTitle(), courseBasicDTO.getDescription(),
+                        courseBasicDTO.getCredits(), courseBasicDTO.getNumber()) : null;
     }
 
 }
