@@ -1,109 +1,206 @@
 package com.turygin.api.server.resource;
 
-import com.turygin.api.model.CourseBasicDTO;
-import com.turygin.api.model.CourseWithSectionsDTO;
-import com.turygin.api.model.DepartmentBasicDTO;
-import com.turygin.api.model.SectionDTO;
+import com.turygin.api.model.*;
 import com.turygin.persistence.entity.*;
 
+import java.sql.Time;
 import java.util.*;
 
+/**
+ * Helper class that facilitates conversion between entities and DTOs.
+ */
 public class Mapper {
 
-    public static CourseBasicDTO mapToCourseBasic(Course course) {
-        return course != null ? new CourseBasicDTO(course.getId(), course.getCode(), course.getTitle(),
-                course.getDescription(), course.getCredits(), course.getDepartment().getId(), course.getNumber()) : null;
+    /**
+     * Converts course entity into course DTO.
+     * @param course course entity
+     * @return course DTO
+     */
+    public static CourseDTO toCourseDTO(Course course) {
+        return new CourseDTO(course.getId(), course.getTitle(), course.getDescription(),
+                course.getCredits(), course.getNumber(), toDepartmentDTO(course.getDepartment()));
     }
 
-    public static List<CourseBasicDTO> mapToCourseBasic(List<Course> courses) {
-        List<CourseBasicDTO> courseBasicDTOList = new ArrayList<>();
+    /**
+     * Converts a list of course entities into a list of course DTOs.
+     * @param courses list of course entities
+     * @return list of course DTOs
+     */
+    public static List<CourseDTO> toCourseDTO(List<Course> courses) {
+        List<CourseDTO> courseDTOList = new ArrayList<>();
         for (Course c : courses) {
-            if (c == null) continue;
-            courseBasicDTOList.add(mapToCourseBasic(c));
+            courseDTOList.add(toCourseDTO(c));
         }
-        return courseBasicDTOList;
+        return courseDTOList;
     }
 
-    public static DepartmentBasicDTO mapToDepartmentBasic(Department department) {
-        return department != null ?
-                new DepartmentBasicDTO(department.getId(), department.getCode(), department.getName()) : null;
+    /**
+     * Converts department entity into department DTO.
+     * @param department department entity
+     * @return department DTO
+     */
+    public static DepartmentDTO toDepartmentDTO(Department department) {
+        return new DepartmentDTO(department.getId(), department.getCode(), department.getName());
     }
 
-    public static List<DepartmentBasicDTO> mapToDepartmentBasic(List<Department> departments) {
-        List<DepartmentBasicDTO> departmentBasicDTOList = new ArrayList<>();
+    /**
+     * Converts a list of department entities into a list of department DTOs.
+     * @param departments list of department entities
+     * @return list of department DTOs
+     */
+    public static List<DepartmentDTO> toDepartmentDTO(List<Department> departments) {
+        List<DepartmentDTO> departmentBasicDTOList = new ArrayList<>();
         for (Department d : departments) {
-            if (d == null) continue;
-            departmentBasicDTOList.add(mapToDepartmentBasic(d));
+            departmentBasicDTOList.add(toDepartmentDTO(d));
         }
         return departmentBasicDTOList;
     }
 
-    public static SectionDTO mapToSection(Section section) {
-        return section != null ? new SectionDTO(section.getId(), section.getMeetingDaysString(),
-                section.getMeetingTimesString(), section.getInstructor().getFullName()) : null;
+    /**
+     * Converts from section's way of storing days of week as a byte to days of week DTO.
+     * @param daysOfWeek byte representing a combination of Section.Day values
+     * @return days of week DTO
+     */
+    public static DaysOfWeekDTO toDaysOfWeekDTO(byte daysOfWeek) {
+        DaysOfWeekDTO daysOfWeekDTO = new DaysOfWeekDTO();
+        Boolean[] selectedDays = new Boolean[5];
+        Section.Day[] days = Section.Day.values();
+        for(int i = 0; i < days.length; i++) {
+            if((daysOfWeek & days[i].value) != 0 ) {
+                selectedDays[i] = true;
+            }
+        }
+        daysOfWeekDTO.setDaysOfWeek(selectedDays);
+        return daysOfWeekDTO;
     }
 
-    public static SortedMap<Long,SectionDTO> mapToSection(List<Section> sections) {
+    /**
+     * Converts SQL Time to meeting time DTO.
+     * @param time SQL time
+     * @return meeting time DTO
+     */
+    public static MeetingTimeDTO toMeetingTimeDTO(Time time) {
+        return new MeetingTimeDTO(time.toLocalTime());
+    }
+
+    public static InstructorDTO toInstructorDTO(Instructor instructor) {
+        return new InstructorDTO(instructor.getId(), instructor.getFullName());
+    }
+
+    /**
+     * Converts section entity into section DTO.
+     * @param section section entity
+     * @return section DTO
+     */
+    public static SectionDTO toSectionDTO(Section section) {
+        return new SectionDTO(section.getId(),
+                toDaysOfWeekDTO(section.getDaysOfWeek()),
+                toMeetingTimeDTO(section.getFromTime()),
+                toMeetingTimeDTO(section.getToTime()),
+                toInstructorDTO(section.getInstructor()));
+    }
+
+    /**
+     * Convert section entity list to a sorted map with ID as the key and section DTO as the value.
+     * @param sections section entity list
+     * @return sorted map with ID as the key and section DTO as the value
+     */
+    public static SortedMap<Long,SectionDTO> toSectionDTO(List<Section> sections) {
         SortedMap<Long,SectionDTO> sectionMap = new TreeMap<>();
         for (Section s : sections) {
-            if (s == null) continue;
-            sectionMap.put(s.getId(), mapToSection(s));
+            sectionMap.put(s.getId(), toSectionDTO(s));
         }
         return sectionMap;
     }
 
-    public static CartSection sectionToCartSection(CartCourse cartCourse, Section section) {
-        return section != null ? new CartSection(cartCourse, section) : null;
+    /**
+     * Creates a cart section from cart course and section entities.
+     * @param cartCourse cart course entity
+     * @param section section entity
+     * @return cart section entity
+     */
+    public static CartSection createCartSection(CartCourse cartCourse, Section section) {
+        return new CartSection(cartCourse, section);
     }
 
-    public static List<CartSection> sectionToCartSection(CartCourse cartCourse, List<Section> sections) {
+    /**
+     * Creates a cart section list from cart course and section entity list.
+     * @param cartCourse cart course entity
+     * @param sections section entity list
+     * @return cart section entity list
+     */
+    public static List<CartSection> createCartSection(CartCourse cartCourse, List<Section> sections) {
         List<CartSection> sectionList = new ArrayList<>();
         for (Section s : sections) {
-            if (s == null) continue;
-            sectionList.add(sectionToCartSection(cartCourse, s));
+            sectionList.add(createCartSection(cartCourse, s));
         }
         return sectionList;
     }
 
-    public static SectionDTO mapCartSectionToSection(CartSection cartSection) {
-        return cartSection != null ? mapToSection(cartSection.getSection()) : null;
+    /**
+     * Converts cart section entity to section DTO.
+     * @param cartSection cart section entity
+     * @return section DTO
+     */
+    public static SectionDTO cartSectionToSectionDTO(CartSection cartSection) {
+        return toSectionDTO(cartSection.getSection());
     }
 
-    public static SortedMap<Long,SectionDTO> mapCartSectionToSection(List<CartSection> sections) {
+    /**
+     * Converts a list of cart section entities to a sorted map with ID as the key and section DTO as the value
+     * @param sections cart section entity list
+     * @return sorted map with ID as the key and section DTO as the value
+     */
+    public static SortedMap<Long,SectionDTO> cartSectionToSectionDTO(List<CartSection> sections) {
         SortedMap<Long,SectionDTO> sectionMap = new TreeMap<>();
         for (CartSection cs : sections) {
-            if (cs == null) continue;
-            SectionDTO mappedSection = mapCartSectionToSection(cs);
+            SectionDTO mappedSection = cartSectionToSectionDTO(cs);
             sectionMap.put(mappedSection.getId(), mappedSection);
         }
         return sectionMap;
     }
 
-    public static CourseWithSectionsDTO mapToCourseWithAllSections(Course course) {
-        if (course == null) return null;
-        CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(mapToCourseBasic(course));
-        SortedMap<Long,SectionDTO> allSectionsMap = mapToSection(course.getSections());
+    /**
+     * Converts a course entity to course DTO with a sorted map of sections.
+     * @param course course entity
+     * @return course DTO with a sorted map of sections
+     */
+    public static CourseWithSectionsDTO toCourseWithAllSections(Course course) {
+        CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(toCourseDTO(course));
+        SortedMap<Long,SectionDTO> allSectionsMap = toSectionDTO(course.getSections());
         courseWithSectionsDTO.setSections(allSectionsMap);
         return courseWithSectionsDTO;
     }
 
-    public static List<CourseWithSectionsDTO> courseToCourseWithSections(List<CartCourse> courses) {
+    /**
+     * Converts a list of cart course entities to a list of course with sections DTO.
+     * The courses contain all the available sections and the ones that are in user's cart
+     * are selected by setting isSelected to true.
+     *
+     * @param courses a list of cart course entities
+     * @return a list of course with sections DTO
+     */
+    public static List<CourseWithSectionsDTO> toCourseWithSections(List<CartCourse> courses) {
         List<CourseWithSectionsDTO> courseDTOs = new ArrayList<>();
         for (CartCourse cc : courses) {
-            if (cc == null) continue;
-            courseDTOs.add(courseToCourseWithSections(cc));
+            courseDTOs.add(toCourseWithSections(cc));
         }
         return courseDTOs;
     }
 
-    public static CourseWithSectionsDTO courseToCourseWithSections(CartCourse course) {
-        if (course == null) {
-            return null;
-        }
+    /**
+     * Converts a cart course entity to a course with sections DTO.
+     * The course contains all the available sections and the ones that are in user's cart
+     * are selected by setting isSelected to true.
+     *
+     * @param course cart course entity
+     * @return course with sections DTO
+     */
+    public static CourseWithSectionsDTO toCourseWithSections(CartCourse course) {
         // Get course with all available sections unselected.
-        CourseWithSectionsDTO mappedCourse = mapToCourseWithAllSections(course.getCourse());
+        CourseWithSectionsDTO mappedCourse = toCourseWithAllSections(course.getCourse());
         // Load all sections that user has in their cart
-        SortedMap<Long,SectionDTO> selectedSections = mapCartSectionToSection(course.getSections());
+        SortedMap<Long,SectionDTO> selectedSections = cartSectionToSectionDTO(course.getSections());
         // Mark selected sections as such
         SortedMap<Long,SectionDTO> allSections = mappedCourse.getSections();
         for (Long sectionId : selectedSections.keySet()) {
@@ -115,10 +212,33 @@ public class Mapper {
         return mappedCourse;
     }
 
-    public static Course courseDTOToCourse(CourseBasicDTO courseBasicDTO) {
-        return courseBasicDTO != null ?
-                new Course(courseBasicDTO.getTitle(), courseBasicDTO.getDescription(),
-                        courseBasicDTO.getCredits(), courseBasicDTO.getNumber()) : null;
+    /**
+     * Creates course entity from course DTO. Neither sections nor department are populated.
+     * @param courseDTO course DTO.
+     * @return course entity
+     */
+    public static Course createCourse(CourseDTO courseDTO) {
+        return courseDTO != null ?
+                new Course(courseDTO.getTitle(), courseDTO.getDescription(),
+                        courseDTO.getCredits(), courseDTO.getNumber()) : null;
     }
 
+    /**
+     * Maps user entity to user DTO.
+     * @param user user entity
+     * @param isNew is this a newly created user
+     * @return user DTO
+     */
+    public static UserDTO toUserDTO(User user, boolean isNew) {
+        return new UserDTO(user.getId(), isNew, user.getRole() == User.Type.ADMIN);
+    }
+
+    /**
+     * Converts cart course entity to course DTO.
+     * @param cartCourse cart course entity
+     * @return course DTO
+     */
+    public static CourseDTO cartCourseToCourseDTO(CartCourse cartCourse) {
+        return Mapper.toCourseDTO(cartCourse.getCourse());
+    }
 }
