@@ -68,6 +68,8 @@ public class Mapper {
         for(int i = 0; i < days.length; i++) {
             if((daysOfWeek & days[i].value) != 0 ) {
                 selectedDays[i] = true;
+            } else {
+                selectedDays[i] = false;
             }
         }
         daysOfWeekDTO.setDaysOfWeek(selectedDays);

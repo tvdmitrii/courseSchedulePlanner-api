@@ -23,7 +23,7 @@ public class ExceptionHandler implements ExceptionMapper<Exception> {
      */
     @Override
     public Response toResponse(Exception exception) {
-        LOG.error(exception);
+        LOG.error("Default exception handler caught an exception: ", exception);
         ErrorDTO errorResponse = new ErrorDTO(Response.Status.BAD_REQUEST, "Could not fulfill the request.");
         return Response.status(Response.Status.BAD_REQUEST)
                 .entity(errorResponse)
