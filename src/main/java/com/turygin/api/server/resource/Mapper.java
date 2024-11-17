@@ -89,6 +89,14 @@ public class Mapper {
         return new InstructorDTO(instructor.getId(), instructor.getFullName());
     }
 
+    public static List<InstructorDTO> toInstructorDTO(List<Instructor> instructors) {
+        List<InstructorDTO> instructorList = new ArrayList<>();
+        for (Instructor i : instructors) {
+            instructorList.add(toInstructorDTO(i));
+        }
+        return instructorList;
+    }
+
     /**
      * Converts section entity into section DTO.
      * @param section section entity
@@ -107,12 +115,20 @@ public class Mapper {
      * @param sections section entity list
      * @return sorted map with ID as the key and section DTO as the value
      */
-    public static SortedMap<Long,SectionDTO> toSectionDTO(List<Section> sections) {
+    public static SortedMap<Long,SectionDTO> toSectionDTOMap(List<Section> sections) {
         SortedMap<Long,SectionDTO> sectionMap = new TreeMap<>();
         for (Section s : sections) {
             sectionMap.put(s.getId(), toSectionDTO(s));
         }
         return sectionMap;
+    }
+
+    public static List<SectionDTO> toSectionDTOList(List<Section> sections) {
+        List<SectionDTO> sectionList = new ArrayList<>();
+        for (Section s : sections) {
+            sectionList.add(toSectionDTO(s));
+        }
+        return sectionList;
     }
 
     /**
@@ -169,7 +185,7 @@ public class Mapper {
      */
     public static CourseWithSectionsDTO toCourseWithAllSections(Course course) {
         CourseWithSectionsDTO courseWithSectionsDTO = new CourseWithSectionsDTO(toCourseDTO(course));
-        SortedMap<Long,SectionDTO> allSectionsMap = toSectionDTO(course.getSections());
+        SortedMap<Long,SectionDTO> allSectionsMap = toSectionDTOMap(course.getSections());
         courseWithSectionsDTO.setSections(allSectionsMap);
         return courseWithSectionsDTO;
     }
@@ -223,6 +239,28 @@ public class Mapper {
         return courseDTO != null ?
                 new Course(courseDTO.getTitle(), courseDTO.getDescription(),
                         courseDTO.getCredits(), courseDTO.getNumber()) : null;
+    }
+
+    public static Section createSection(SectionDTO sectionDTO) {
+        if(sectionDTO == null) { return null; }
+
+        int daysOfWeek = toSectionDayOfWeek(sectionDTO.getDaysOfWeek());
+
+        return new Section(daysOfWeek,
+                Time.valueOf(sectionDTO.getStartTime().getTime()),
+                Time.valueOf(sectionDTO.getEndTime().getTime()));
+    }
+
+    public static int toSectionDayOfWeek(DaysOfWeekDTO daysOfWeekDTO) {
+        int daysOfWeek = 0;
+        Boolean[] selectedDays = daysOfWeekDTO.getDaysOfWeek();
+        Section.Day[] days = Section.Day.values();
+        for(int i = 0; i < selectedDays.length; i++) {
+            if(selectedDays[i]) {
+                daysOfWeek = daysOfWeek | days[i].value;
+            }
+        }
+        return daysOfWeek;
     }
 
     /**

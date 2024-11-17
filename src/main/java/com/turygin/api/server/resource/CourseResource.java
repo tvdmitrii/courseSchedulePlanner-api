@@ -96,58 +96,58 @@ public class CourseResource implements ICourseResource {
 
     /**
      * Inserts a new course.
-     * @param courseBasicDTO course DTO containing course information (request body)
+     * @param courseDTO course DTO containing course information (request body)
      * @return newly created course DTO
      */
     @POST
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response addCourse(CourseDTO courseBasicDTO) {
-        assert courseBasicDTO != null;
-        LOG.debug("Inserting course {}", courseBasicDTO.toString());
-        Course course = Mapper.createCourse(courseBasicDTO);
+    public Response addCourse(CourseDTO courseDTO) {
+        assert courseDTO != null;
+        LOG.debug("Inserting course {}", courseDTO.toString());
+        Course course = Mapper.createCourse(courseDTO);
 
-        Department department = DEPARTMENT_DAO.getById(courseBasicDTO.getDepartment().getId());
+        Department department = DEPARTMENT_DAO.getById(courseDTO.getDepartment().getId());
         assert department != null;
         course.setDepartment(department);
         COURSE_DAO.insert(course);
 
-        courseBasicDTO = Mapper.toCourseDTO(course);
-        LOG.debug("Course inserted: {}", courseBasicDTO.toString());
-        return Response.status(Response.Status.CREATED).entity(courseBasicDTO).build();
+        courseDTO = Mapper.toCourseDTO(course);
+        LOG.debug("Course inserted: {}", courseDTO.toString());
+        return Response.status(Response.Status.CREATED).entity(courseDTO).build();
     }
 
     /**
      * Updates an existing course.
-     * @param courseBasicDTO course DTO containing new information (request body)
+     * @param courseDTO course DTO containing new information (request body)
      * @return updated course DTO
      */
     @PUT
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response updateCourse(CourseDTO courseBasicDTO) {
-        assert courseBasicDTO != null;
-        LOG.debug("Updating course {}", courseBasicDTO.toString());
+    public Response updateCourse(CourseDTO courseDTO) {
+        assert courseDTO != null;
+        LOG.debug("Updating course {}", courseDTO.toString());
 
         // Load course from DB and ensure it exists
-        Course course = COURSE_DAO.getById(courseBasicDTO.getId());
+        Course course = COURSE_DAO.getById(courseDTO.getId());
         assert course != null;
 
-        course.setDescription(courseBasicDTO.getDescription());
-        course.setTitle(courseBasicDTO.getTitle());
-        course.setNumber(courseBasicDTO.getNumber());
-        course.setCredits(courseBasicDTO.getCredits());
+        course.setDescription(courseDTO.getDescription());
+        course.setTitle(courseDTO.getTitle());
+        course.setNumber(courseDTO.getNumber());
+        course.setCredits(courseDTO.getCredits());
 
         // Update department if changed
-        if (course.getDepartment().getId() != courseBasicDTO.getDepartment().getId()) {
-            Department department = DEPARTMENT_DAO.getById(courseBasicDTO.getDepartment().getId());
+        if (course.getDepartment().getId() != courseDTO.getDepartment().getId()) {
+            Department department = DEPARTMENT_DAO.getById(courseDTO.getDepartment().getId());
             assert department != null;
             course.setDepartment(department);
         }
         COURSE_DAO.update(course);
 
-        courseBasicDTO = Mapper.toCourseDTO(course);
-        LOG.debug("Updated course: {}", courseBasicDTO.toString());
-        return Response.ok(courseBasicDTO).build();
+        courseDTO = Mapper.toCourseDTO(course);
+        LOG.debug("Updated course: {}", courseDTO.toString());
+        return Response.ok(courseDTO).build();
     }
 }
