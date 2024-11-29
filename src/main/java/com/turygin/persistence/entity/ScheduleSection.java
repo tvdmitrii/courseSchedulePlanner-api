@@ -88,7 +88,7 @@ public class ScheduleSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleSection that = (ScheduleSection) o;
-        return Objects.equals(schedule, that.schedule) && Objects.equals(section, that.section);
+        return Objects.equals(section, that.section);
     }
 
     /**
@@ -97,6 +97,6 @@ public class ScheduleSection {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(schedule, section);
+        return Objects.hash(section);
     }
 }

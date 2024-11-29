@@ -154,7 +154,17 @@ public class Schedule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
-        return selected == schedule.selected && Objects.equals(user, schedule.user);
+        if (selected == schedule.selected &&
+                Objects.equals(user, schedule.user) &&
+                sections.size() == schedule.sections.size()) {
+            // Compare sections one by one
+            for (int i = 0; i < schedule.sections.size(); i++) {
+                if (!Objects.equals(sections.get(i), schedule.sections.get(i))) return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -163,6 +173,10 @@ public class Schedule {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(user, selected);
+        List<Integer> hashCodes = new ArrayList<>(sections.size());
+        for (ScheduleSection section : sections) {
+            hashCodes.add(section.hashCode());
+        }
+        return Objects.hash(user, selected, hashCodes);
     }
 }
