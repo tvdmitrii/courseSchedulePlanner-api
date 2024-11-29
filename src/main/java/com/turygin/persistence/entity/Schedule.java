@@ -28,7 +28,7 @@ public class Schedule {
 
     /** Sections of that are part of the schedule. */
     @OneToMany(mappedBy = "schedule", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ScheduleSection> sections = new ArrayList<>();
+    private final List<ScheduleSection> sections = new ArrayList<>();
 
     /** Empty constructor. */
     public Schedule() {}
@@ -72,8 +72,11 @@ public class Schedule {
      * Sets sections.
      * @param sections the sections
      */
-    public void replaceSections(List<ScheduleSection> sections) {
+    public void setSections(List<ScheduleSection> sections) {
+        // Clear list
         this.sections.clear();
+
+        // If provided, add sections one by one to ensure bidirectional binding
         if (sections != null) {
             for (ScheduleSection section : sections) {
                 this.addSection(section);

@@ -1,7 +1,6 @@
 package com.turygin.persistence.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class Course {
 
     /** Sections associated with the course. */
     @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Section> sections = new ArrayList<>();
+    private final List<Section> sections = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -222,7 +221,15 @@ public class Course {
      * @param sections new section list
      */
     public void setSections(List<Section> sections) {
-        this.sections = sections;
+        // Clear list
+        this.sections.clear();
+
+        // If provided, add sections one by one to ensure bidirectional binding
+        if (sections != null) {
+            for (Section section : sections) {
+                this.addSection(section);
+            }
+        }
     }
 
     /**

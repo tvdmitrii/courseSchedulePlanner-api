@@ -18,8 +18,11 @@ import java.util.List;
 public class Dao<T> {
 
     protected static final Logger LOG = LogManager.getLogger(Dao.class);
+
+    /** Session factory for obtaining Hibernate sessions. */
     protected static final SessionFactory SESSION_FACTORY = SessionFactoryProvider.getSessionFactory();
 
+    /** Stores entity class to facilitate conversion of entities to appropriate type. */
     protected final Class<T> ENTITY_CLASS;
 
     /**

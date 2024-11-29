@@ -30,7 +30,7 @@ public class CartCourse {
 
     /** Sections of the course selected by the user. */
     @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CartSection> sections = new ArrayList<>();
+    private final List<CartSection> sections = new ArrayList<>();
 
     /** Empty constructor. */
     public CartCourse() {}
@@ -82,7 +82,15 @@ public class CartCourse {
      * @param sections the sections
      */
     public void setSections(List<CartSection> sections) {
-        this.sections = sections;
+        // Clear list
+        this.sections.clear();
+
+        // If provided, add sections one by one to ensure bidirectional binding
+        if (sections != null) {
+            for (CartSection section : sections) {
+                this.addSection(section);
+            }
+        }
     }
 
     /**

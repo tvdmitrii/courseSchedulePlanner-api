@@ -28,7 +28,7 @@ public class Instructor {
 
     /** Sections taught by the instructor. */
     @OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Section> sections = new ArrayList<>();
+    private final List<Section> sections = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -105,7 +105,15 @@ public class Instructor {
      * @param sections new section list
      */
     public void setSections(List<Section> sections) {
-        this.sections = sections;
+        // Clear list
+        this.sections.clear();
+
+        // If provided, add sections one by one to ensure bidirectional binding
+        if (sections != null) {
+            for (Section section : sections) {
+                this.addSection(section);
+            }
+        }
     }
 
     /**

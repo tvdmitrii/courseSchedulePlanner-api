@@ -26,7 +26,7 @@ public class Department {
 
     /** Courses associated with the department. */
     @OneToMany(mappedBy = "department", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Course> courses = new ArrayList<>();
+    private final List<Course> courses = new ArrayList<>();
 
     /**
      * Empty constructor.
@@ -96,7 +96,15 @@ public class Department {
      * @param courses new course list
      */
     public void setCourses(List<Course> courses) {
-        this.courses = courses;
+        // Clear list
+        this.courses.clear();
+
+        // If provided, add courses one by one to ensure bidirectional binding
+        if (courses != null) {
+            for (Course course : courses) {
+                this.addCourse(course);
+            }
+        }
     }
 
     /**

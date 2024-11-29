@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class CourseDao extends Dao<Course> {
 
+    /**
+     * Instantiates course dao.
+     */
     public CourseDao() {
         super(Course.class);
     }
@@ -34,24 +37,24 @@ public class CourseDao extends Dao<Course> {
 
         List<JpaPredicate> predicates = new ArrayList<>();
 
-        // Create a predicate for searching by title
+        // Add a predicate for searching by title to the list, if exists
         if(title != null && !title.isEmpty()) {
             predicates.add(b.like(b.lower(root.get("title")), String.format("%%%s%%", title.toLowerCase())));
         }
 
-        // Create a predicate for searching by departmentId
+        // Add a predicate for searching by departmentId to the list, if exists
         if(departmentId > 0) {
             predicates.add(b.equal(root.get("department").get("id"), departmentId));
         }
 
-        List<Course> entities = new ArrayList<>();
+        // If there are no predicates -- return all
         if (!predicates.isEmpty()){
             q.select(root).where(b.and(predicates.toArray(new JpaPredicate[0])));
         } else {
             q.select(root);
         }
-        entities = session.createQuery(q).getResultList();
 
+        List<Course> entities = session.createQuery(q).getResultList();
         LOG.debug("Found {} entities.", entities.size());
         session.close();
         return entities;

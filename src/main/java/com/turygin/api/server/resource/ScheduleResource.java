@@ -88,7 +88,7 @@ public class ScheduleResource implements IScheduleResource {
             for(Section section : sections) {
                 scheduleSections.add(new ScheduleSection(scheduleEntity, section));
             }
-            scheduleEntity.replaceSections(scheduleSections);
+            scheduleEntity.setSections(scheduleSections);
             SCHEDULE_DAO.insert(scheduleEntity);
             scheduleEnitites.add(scheduleEntity);
         }

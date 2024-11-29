@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,8 +15,14 @@ import java.util.Objects;
 @Table(name = "section")
 public class Section {
 
+    /** 12-hour time format with AM/PM designation. */
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("hh:mm a");
 
+    /**
+     * Day of the week enum where each of the days is stored
+     * as a separate bit. Both byte value and abbreviated name are
+     * accessible.
+     */
     public enum Day {
         MONDAY((byte) 1, "M"),
         TUESDAY((byte) 2, "Tu"),
@@ -25,9 +30,17 @@ public class Section {
         THURSDAY((byte) 8, "Th"),
         FRIDAY((byte) 16, "F");
 
+        /** Byte value. */
         public final byte value;
+
+        /** Abbreviated week day name. */
         public final String name;
 
+        /**
+         * Instantiates day of the week.
+         * @param value byte value
+         * @param name day of the week abbreviation
+         */
         Day(byte value, String name) {
             this.value = value;
             this.name = name;
@@ -187,6 +200,11 @@ public class Section {
         this.toTime = toTime;
     }
 
+    /**
+     * Check whether there is a conflict between this section's and other section's meeting times.
+     * @param section another section
+     * @return true if conflicting, false otherwise
+     */
     public boolean isConflicting(Section section) {
         // Check if sections have at least one overlapping day and whether start time or end time of a given section
         // falls between the start and end times of the current section.

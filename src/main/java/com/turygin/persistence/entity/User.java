@@ -14,33 +14,34 @@ import java.util.UUID;
 @Table(name = "user")
 public class User {
 
-    /** Enum describing user type. */
+    /** Enum describing user privilege level. */
     public enum Type {
         USER,
         ADMIN
     }
 
+    /** Unique user ID. */
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
+    /** Unique Cognito UUID. */
     @Column(name = "uuid", unique = true)
     private UUID uuid;
 
+    /** User role describing privilege level. */
     @Column(name = "role")
     private Type role;
 
     /** Courses in user's cart. */
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CartCourse> courses = new ArrayList<>();
+    private final List<CartCourse> courses = new ArrayList<>();
 
     /** Generated user schedules. */
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Schedule> schedules = new ArrayList<>();
+    private final List<Schedule> schedules = new ArrayList<>();
 
-    /**
-     * Empty constructor.
-     */
+    /** Empty constructor. */
     public User(){}
 
     /**
@@ -56,7 +57,6 @@ public class User {
 
     /**
      * Gets id.
-     *
      * @return the id
      */
     public long getId() {
@@ -65,7 +65,6 @@ public class User {
 
     /**
      * Gets role.
-     *
      * @return the role
      */
     public Type getRole() {
@@ -74,7 +73,6 @@ public class User {
 
     /**
      * Sets role.
-     *
      * @param role the role
      */
     public void setRole(Type role) {
@@ -94,7 +92,15 @@ public class User {
      * @param courses the courses
      */
     public void setCoursesInCart(List<CartCourse> courses) {
-        this.courses = courses;
+        // Clear list
+        this.courses.clear();
+
+        // If provided, add courses one by one to ensure bidirectional binding
+        if (courses != null) {
+            for (CartCourse course : courses) {
+                this.addCourseToCart(course);
+            }
+        }
     }
 
     /**
@@ -128,7 +134,10 @@ public class User {
      * @param schedules the schedules
      */
     public void replaceSchedules(List<Schedule> schedules) {
+        // Clear list
         this.schedules.clear();
+
+        // If provided, add schedules one by one to ensure bidirectional binding
         if (schedules != null) {
             for (Schedule schedule : schedules) {
                 this.addSchedule(schedule);
@@ -178,7 +187,6 @@ public class User {
 
     /**
      * Sets uuid.
-     *
      * @param uuid the uuid
      */
     public void setUuid(UUID uuid) {
