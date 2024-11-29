@@ -13,14 +13,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/** Schedule section DAO tests. */
 public class ScheduleSectionTest {
     private static final Logger LOG = LogManager.getLogger(ScheduleSectionTest.class);
+
+    /** List of schedule sections. */
     private static final List<ScheduleSection> SCHEDULE_SECTIONS = new ArrayList<>();
+
+    /** DAO for working with schedule sections in the database. */
     private static final Dao<ScheduleSection> SCHEDULE_SECTION_DAO = new Dao<>(ScheduleSection.class);
+
+    /** DAO for working with schedules in the database. */
     private static final Dao<Schedule> SCHEDULE_DAO = new Dao<>(Schedule.class);
+
+    /** DAO for working with sections in the database. */
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
+
+    /** Initial schedule count. */
     private static final int INITIAL_SCHEDULE_SECTION_COUNT = 5;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -39,6 +51,7 @@ public class ScheduleSectionTest {
         SCHEDULE_SECTIONS.sort(Comparator.comparingLong(ScheduleSection::getId));
     }
 
+    /** Ensure schedule section can be loaded by id. */
     @Test
     void getById() {
         ScheduleSection scheduleSection1 = SCHEDULE_SECTIONS.get(0);
@@ -48,6 +61,7 @@ public class ScheduleSectionTest {
         assertEquals(scheduleSection1, scheduleSection);
     }
 
+    /** Ensure getting schedule section by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         ScheduleSection scheduleSection = SCHEDULE_SECTION_DAO.getById(INITIAL_SCHEDULE_SECTION_COUNT + 10);
@@ -55,6 +69,7 @@ public class ScheduleSectionTest {
         assertNull(scheduleSection);
     }
 
+    /** Ensure schedule section can be inserted. */
     @Test
     void insert() {
         Schedule schedule = SCHEDULE_DAO.getById(2);
@@ -72,6 +87,7 @@ public class ScheduleSectionTest {
         assertEquals(scheduleSection.getSection(), section);
     }
 
+    /** Ensure schedule section can be removed. */
     @Test
     void delete() {
         ScheduleSection scheduleSection1 = SCHEDULE_SECTIONS.get(1);
@@ -88,6 +104,7 @@ public class ScheduleSectionTest {
         assertNotNull(section);
     }
 
+    /** Ensure all schedule sections can be loaded. */
     @Test
     void getAll() {
         List<ScheduleSection> scheduleSectionsFromDb = SCHEDULE_SECTION_DAO.getAll();

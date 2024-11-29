@@ -13,13 +13,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Instructor DAO tests. */
 class InstructorDaoTest {
 
     private static final Logger LOG = LogManager.getLogger(InstructorDaoTest.class);
+
+    /** List of instructors. */
     private static final List<Instructor> INSTRUCTORS = new ArrayList<>();
+
+    /** DAO for working with instructors in the database. */
     private static final Dao<Instructor> INSTRUCTOR_DAO = new Dao<>(Instructor.class);
+
+    /** Initial instructor count. */
     private static final int INITIAL_INSTRUCTOR_COUNT = 4;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -38,7 +46,7 @@ class InstructorDaoTest {
         INSTRUCTORS.sort(Comparator.comparingLong(Instructor::getId));
     }
 
-
+    /** Ensure instructor can be loaded by id. */
     @Test
     void getById() {
         Instructor instructor1 = INSTRUCTORS.get(0);
@@ -48,6 +56,7 @@ class InstructorDaoTest {
         assertEquals(instructor1, instructor);
     }
 
+    /** Ensure getting instructor by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         Instructor instructor = INSTRUCTOR_DAO.getById(INSTRUCTORS.size() + 10);
@@ -55,6 +64,7 @@ class InstructorDaoTest {
         assertNull(instructor);
     }
 
+    /** Ensure instructor can be updated. */
     @Test
     void update() {
         String newFirstName = "Collin";
@@ -69,6 +79,7 @@ class InstructorDaoTest {
         assertEquals(instructor2, instructor);
     }
 
+    /** Ensure instructor can be inserted. */
     @Test
     void insert() {
         Instructor newInstructor = new Instructor("Walter", "Tobias");
@@ -79,6 +90,7 @@ class InstructorDaoTest {
         assertEquals(newInstructor, instructor);
     }
 
+    /** Ensure duplicate instructor names are not allowed. */
     @Test
     void insert_DuplicateName() {
         Instructor instructor3 = INSTRUCTORS.get(2);
@@ -88,6 +100,7 @@ class InstructorDaoTest {
         assertThrows(ConstraintViolationException.class, () -> INSTRUCTOR_DAO.insert(newInstructor));
     }
 
+    /** Ensure instructor can be removed. */
     @Test
     void delete() {
         Instructor instructor4 = INSTRUCTORS.get(INITIAL_INSTRUCTOR_COUNT - 1);
@@ -99,6 +112,7 @@ class InstructorDaoTest {
         assertNull(instructor);
     }
 
+    /** Ensure all instructors can be loaded. */
     @Test
     void getAll() {
         List<Instructor> instsFromDb = INSTRUCTOR_DAO.getAll();
@@ -114,6 +128,7 @@ class InstructorDaoTest {
         }
     }
 
+    /** Ensure instructors can be searched by an exact property match. */
     @Test
     void getByPropertyEquals_String() {
         Instructor instructor1 = INSTRUCTORS.get(0);
@@ -124,6 +139,7 @@ class InstructorDaoTest {
         assertEquals(instructor1, foundInsts.get(0));
     }
 
+    /** Ensure searching for instructors by invalid property match returns an empty list. */
     @Test
     void getByPropertyEquals_Missing() {
         List<Instructor> foundInsts = INSTRUCTOR_DAO.getByPropertyEquals("id", INSTRUCTORS.size() + 1);
@@ -131,6 +147,7 @@ class InstructorDaoTest {
         assertEquals(0, foundInsts.size());
     }
 
+    /** Ensure instructors can be found by a property substring. */
     @Test
     void getByPropertySubstring() {
         List<Instructor> foundInsts = INSTRUCTOR_DAO.getByPropertySubstring("firstName", "ie");

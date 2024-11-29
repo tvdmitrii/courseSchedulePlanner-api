@@ -13,19 +13,40 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/** User DAO tests. */
 class UserDaoTest {
 
     private static final Logger LOG = LogManager.getLogger(UserDaoTest.class);
+
+    /** List of users. */
     private static final List<User> USERS = new ArrayList<>();
+
+    /** DAO for working with users in the database. */
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
+
+    /** DAO for working with cart courses in the database. */
     private static final Dao<CartCourse> CART_COURSE_DAO = new Dao<>(CartCourse.class);
+
+    /** DAO for working with cart sections in the database. */
     private static final Dao<CartSection> CART_SECTION_DAO = new Dao<>(CartSection.class);
+
+    /** DAO for working with courses in the database. */
     private static final CourseDao COURSE_DAO = new CourseDao();
+
+    /** DAO for working with sections in the database. */
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
+
+    /** DAO for working with schedules in the database. */
     private static final Dao<Schedule> SCHEDULE_DAO = new Dao<>(Schedule.class);
+
+    /** DAO for working with schedule sections in the database. */
     private static final Dao<ScheduleSection> SCHEDULE_SECTION_DAO = new Dao<>(ScheduleSection.class);
+
+    /** Initial user count. */
     private static final int INITIAL_USER_COUNT = 5;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -43,7 +64,8 @@ class UserDaoTest {
         // Sort by id to guarantee order for convenience
         USERS.sort(Comparator.comparingLong(User::getId));
     }
-    
+
+    /** Ensure user can be loaded by id. */
     @Test
     void getById() {
         User user1 = USERS.get(0);
@@ -54,6 +76,7 @@ class UserDaoTest {
         assertEquals(user1, user);
     }
 
+    /** Ensure getting user by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         User user = USER_DAO.getById(INITIAL_USER_COUNT + 10);
@@ -61,6 +84,7 @@ class UserDaoTest {
         assertNull(user);
     }
 
+    /** Ensure user can be updated. */
     @Test
     void update() {
         User.Type newRole = User.Type.ADMIN;
@@ -73,6 +97,7 @@ class UserDaoTest {
         assertEquals(user2, user);
     }
 
+    /** Ensure user can be inserted. */
     @Test
     void insert() {
         User newUser = new User(UUID.randomUUID(), User.Type.USER);
@@ -83,6 +108,7 @@ class UserDaoTest {
         assertEquals(newUser, user);
     }
 
+    /** Ensure users with duplicate UUIDs are not allowed. */
     @Test
     void insert_DuplicateUUID() {
         User user3 = USERS.get(2);
@@ -92,6 +118,7 @@ class UserDaoTest {
         assertThrows(ConstraintViolationException.class, () -> USER_DAO.insert(newUser));
     }
 
+    /** Ensure user can be removed. */
     @Test
     void delete() {
         User user4 = USERS.get(INITIAL_USER_COUNT - 1);
@@ -103,6 +130,7 @@ class UserDaoTest {
         assertNull(user);
     }
 
+    /** Ensure all users can be removed. */
     @Test
     void getAll() {
         List<User> usersFromDb = USER_DAO.getAll();
@@ -116,6 +144,7 @@ class UserDaoTest {
         }
     }
 
+    /** Ensure user can be searched by an exact UUID match. */
     @Test
     void getByPropertyEquals_Uuid() {
         User user1 = USERS.get(0);
@@ -126,7 +155,7 @@ class UserDaoTest {
         assertEquals(user1, foundUsers.get(0));
     }
 
-
+    /** Ensure user can be searched by an exact ID match. */
     @Test
     void getByPropertyEquals_Long() {
         User user2 = USERS.get(1);
@@ -137,6 +166,7 @@ class UserDaoTest {
         assertEquals(user2, foundUsers.get(0));
     }
 
+    /** Ensure searching for users by invalid property match returns an empty list. */
     @Test
     void getByPropertyEquals_Missing() {
         List<User> foundUsers = USER_DAO.getByPropertyEquals("id", 1000);
@@ -144,6 +174,7 @@ class UserDaoTest {
         assertEquals(0, foundUsers.size());
     }
 
+    /** Ensure a course and its associated sections can be added to user's cart. */
     @Test
     void addCourseWithSectionsToCart() {
         User user1 = USERS.get(3);
@@ -178,6 +209,7 @@ class UserDaoTest {
         }
     }
 
+    /** Ensure a course with associated sections can be removed from cart. */
     @Test
     void removeCourseWithSectionsFromCart() {
         User user1 = USERS.get(0);
@@ -201,6 +233,7 @@ class UserDaoTest {
         }
     }
 
+    /** Ensure a new schedule with associated sections can be added to schedule list. */
     @Test
     void addNewScheduleWithSections() {
         User user1 = USERS.get(3);
@@ -226,6 +259,7 @@ class UserDaoTest {
         }
     }
 
+    /** Ensure schedule and the associated sections can be removed from user's schedule list. */
     @Test
     void removeScheduleWithSections() {
         User user1 = USERS.get(0);

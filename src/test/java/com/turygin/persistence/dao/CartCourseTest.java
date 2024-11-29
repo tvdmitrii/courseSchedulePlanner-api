@@ -14,14 +14,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/** Cart Course DAO tests. */
 public class CartCourseTest {
     private static final Logger LOG = LogManager.getLogger(CartCourseTest.class);
+
+    /** List of cart courses. */
     private static final List<CartCourse> CART_COURSES = new ArrayList<>();
+
+    /** DAO for working with cart courses in the database. */
     private static final Dao<CartCourse> CART_COURSE_DAO = new Dao<>(CartCourse.class);
+
+    /** DAO for working with courses in the database. */
     private static final CourseDao COURSE_DAO = new CourseDao();
+
+    /** DAO for working with users in the database. */
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
+
+    /** Initial number of cart courses in the database. */
     private static final int INITIAL_CART_COURSE_COUNT = 3;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -40,6 +52,7 @@ public class CartCourseTest {
         CART_COURSES.sort(Comparator.comparingLong(CartCourse::getId));
     }
 
+    /** Ensure cart course can be loaded by id. */
     @Test
     void getById() {
         CartCourse cartCourse1 = CART_COURSES.get(0);
@@ -49,6 +62,7 @@ public class CartCourseTest {
         assertEquals(cartCourse1, cartCourse);
     }
 
+    /** Ensure getting cart course by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         CartCourse cartCourse = CART_COURSE_DAO.getById(INITIAL_CART_COURSE_COUNT + 10);
@@ -56,6 +70,7 @@ public class CartCourseTest {
         assertNull(cartCourse);
     }
 
+    /** Ensure a cart course can be inserted. */
     @Test
     void insert() {
         Course course = COURSE_DAO.getById(7);
@@ -74,6 +89,7 @@ public class CartCourseTest {
         assertTrue(user.getCoursesInCart().contains(cartCourse));
     }
 
+    /** Ensure cart course can be deleted but the underlying course remains. */
     @Test
     void delete() {
         CartCourse cartCourse1 = CART_COURSES.get(1);
@@ -95,6 +111,7 @@ public class CartCourseTest {
         assertNotNull(course);
     }
 
+    /** Ensure all cart courses can be fetched. */
     @Test
     void getAll() {
         List<CartCourse> cartCoursesFromDb = CART_COURSE_DAO.getAll();

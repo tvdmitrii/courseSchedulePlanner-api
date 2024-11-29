@@ -14,16 +14,30 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Department DAO tests. */
 class DepartmentDaoTest {
 
     private static final Logger LOG = LogManager.getLogger(DepartmentDaoTest.class);
+
+    /** List of departments. */
     private static final List<Department> DEPARTMENTS = new ArrayList<>();
+
+    /** List of courses associated with the first department in the list. */
     private static final List<Course> CS_COURSES = new ArrayList<>();
+
+    /** DAO for working with departments un the database. */
     private static final Dao<Department> DEPARTMENT_DAO = new Dao<>(Department.class);
+
+    /** DAO for working with courses in the database. */
     private static final CourseDao COURSE_DAO = new CourseDao();
+
+    /** Initial department count. */
     private static final int INITIAL_DEPARTMENT_COUNT = 5;
+
+    /** Initial course count associated with the first department in the list. */
     private static final int INITIAL_CS_COURSE_COUNT = 3;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -50,6 +64,7 @@ class DepartmentDaoTest {
         CS_COURSES.sort(Comparator.comparingLong(Course::getId));
     }
 
+    /** Ensure department can be loaded by id. */
     @Test
     void getById() {
         Department department1 = DEPARTMENTS.get(0);
@@ -59,6 +74,7 @@ class DepartmentDaoTest {
         assertEquals(department1, department);
     }
 
+    /** Ensure getting department by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         Department department = DEPARTMENT_DAO.getById(INITIAL_DEPARTMENT_COUNT + 10);
@@ -66,6 +82,7 @@ class DepartmentDaoTest {
         assertNull(department);
     }
 
+    /** Ensure department can be updated. */
     @Test
     void update() {
         String newCode = "ME";
@@ -80,6 +97,7 @@ class DepartmentDaoTest {
         assertEquals(department2, department);
     }
 
+    /** Ensure department can be inserted. */
     @Test
     void insert() {
         Department newDepartment = new Department("CHEM", "Chemistry");
@@ -90,6 +108,7 @@ class DepartmentDaoTest {
         assertEquals(newDepartment, department);
     }
 
+    /** Ensure that duplicated department names are not allowed. */
     @Test
     void insert_DuplicateName() {
         Department department3 = DEPARTMENTS.get(2);
@@ -99,6 +118,7 @@ class DepartmentDaoTest {
         assertThrows(ConstraintViolationException.class, () -> DEPARTMENT_DAO.insert(newDepartment));
     }
 
+    /** Ensure that duplicate department codes are not allowed. */
     @Test
     void insert_DuplicateCode() {
         Department department3 = DEPARTMENTS.get(2);
@@ -108,6 +128,7 @@ class DepartmentDaoTest {
         assertThrows(ConstraintViolationException.class, () -> DEPARTMENT_DAO.insert(newDepartment));
     }
 
+    /** Ensure department can be removed. */
     @Test
     void delete() {
         Department department4 = DEPARTMENTS.get(3);
@@ -119,6 +140,7 @@ class DepartmentDaoTest {
         assertNull(department);
     }
 
+    /** Ensure all departments can be loaded. */
     @Test
     void getAll() {
         List<Department> deptsFromDb = DEPARTMENT_DAO.getAll();
@@ -133,6 +155,7 @@ class DepartmentDaoTest {
         }
     }
 
+    /** Ensure departments can be searched by an exact property match. */
     @Test
     void getByPropertyEquals_String() {
         Department department1 = DEPARTMENTS.get(0);
@@ -143,6 +166,7 @@ class DepartmentDaoTest {
         assertEquals(foundDepts.get(0), department1);
     }
 
+    /** Ensure searching for a department by invalid property match returns an empty list. */
     @Test
     void getByPropertyEquals_Missing() {
         List<Department> foundDepts = DEPARTMENT_DAO.getByPropertyEquals("id", DEPARTMENTS.size() + 1);
@@ -150,6 +174,7 @@ class DepartmentDaoTest {
         assertEquals(foundDepts.size(), 0);
     }
 
+    /** Ensure departments can be found by a property substring. */
     @Test
     void getByPropertySubstring() {
         List<Department> foundDepts = DEPARTMENT_DAO.getByPropertySubstring("name", "Eng");
@@ -158,6 +183,7 @@ class DepartmentDaoTest {
         assertEquals(foundDepts.size(), 2);
     }
 
+    /** Ensure associated courses are loaded with a department. */
     @Test
     void getAllCourses() {
         Department department1 = DEPARTMENTS.get(0);
@@ -174,6 +200,7 @@ class DepartmentDaoTest {
         }
     }
 
+    /** Ensure a course without sections can be added to the department. */
     @Test
     void addCourse_NoSections() {
         Department engineering = DEPARTMENT_DAO.getById(2);
@@ -196,6 +223,7 @@ class DepartmentDaoTest {
         assertTrue(department.getCourses().contains(course));
     }
 
+    /** Ensure a course without sections can be removed from a department. */
     @Test
     void removeCourse_NoSections() {
         List<Department> deptList = DEPARTMENT_DAO.getByPropertyEquals("code", "TEST");
@@ -215,6 +243,7 @@ class DepartmentDaoTest {
         assertNull(course);
     }
 
+    /** Ensure a department and associated courses can be removed. */
     @Test
     void removeDepartmentWithCourses_NoSections() {
         List<Department> deptList = DEPARTMENT_DAO.getByPropertyEquals("code", "TEST");
@@ -232,6 +261,7 @@ class DepartmentDaoTest {
         assertEquals(0, courses.size());
     }
 
+    /** Ensure a new department can be inserted together with its courses. */
     @Test
     void addDepartmentWithCourses_NoSections() {
         Department newDepartment = new Department("JUNIT", "Unit Testing");

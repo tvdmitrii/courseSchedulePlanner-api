@@ -13,14 +13,26 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Section DAO tests. */
 public class SectionDaoTest {
     private static final Logger LOG = LogManager.getLogger(SectionDaoTest.class);
+
+    /** List of sections. */
     private static final List<Section> SECTIONS = new ArrayList<>();
+
+    /** DAO for working with sections in the database. */
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
+
+    /** DAO for working with courses in the database. */
     private static final CourseDao COURSE_DAO = new CourseDao();
+
+    /** DAO for working with instructors in the database. */
     private static final Dao<Instructor> INSTRUCTOR_DAO = new Dao<>(Instructor.class);
+
+    /** Initial section count. */
     private static final int INITIAL_SECTION_COUNT = 10;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -39,6 +51,7 @@ public class SectionDaoTest {
         SECTIONS.sort(Comparator.comparingLong(Section::getId));
     }
 
+    /** Ensure section can be loaded by id. */
     @Test
     void getById() {
         Section section1 = SECTIONS.get(0);
@@ -48,6 +61,7 @@ public class SectionDaoTest {
         assertEquals(section1, section);
     }
 
+    /** Ensure getting section by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         Section section = SECTION_DAO.getById(INITIAL_SECTION_COUNT + 10);
@@ -55,6 +69,7 @@ public class SectionDaoTest {
         assertNull(section);
     }
 
+    /** Ensure section can be updated. */
     @Test
     void update() {
         int newDaysOfWeek = Section.Day.THURSDAY.value & Section.Day.FRIDAY.value;
@@ -70,6 +85,7 @@ public class SectionDaoTest {
         assertEquals(section2, section);
     }
 
+    /** Ensure section can be inserted. */
     @Test
     void insert() {
         Course testCourse = COURSE_DAO.getById(7);
@@ -93,6 +109,7 @@ public class SectionDaoTest {
         assertTrue(section.getInstructor().getSections().contains(section));
     }
 
+    /** Ensure section can be removed. */
     @Test
     void delete() {
         Section section4 = SECTIONS.get(3);
@@ -114,6 +131,7 @@ public class SectionDaoTest {
         assertFalse(instructor.getSections().contains(section4));
     }
 
+    /** Ensure all sections can be loaded. */
     @Test
     void getAll() {
         List<Section> sectionsFromDb = SECTION_DAO.getAll();
@@ -128,6 +146,7 @@ public class SectionDaoTest {
         }
     }
 
+    /** Ensure sections can be searched by an exact property match. */
     @Test
     void getByPropertyEquals() {
         Section section1 = SECTIONS.get(0);
@@ -137,6 +156,7 @@ public class SectionDaoTest {
         assertEquals(4, foundSections.size());
     }
 
+    /** Ensure searching for sections by invalid property match returns an empty list. */
     @Test
     void getByPropertyEquals_Missing() {
         List<Section> foundSections = SECTION_DAO.getByPropertyEquals("id", SECTIONS.size() + 1);

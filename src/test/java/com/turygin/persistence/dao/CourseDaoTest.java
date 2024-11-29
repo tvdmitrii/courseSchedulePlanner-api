@@ -15,16 +15,32 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/** Course DAO tests. */
 public class CourseDaoTest {
     private static final Logger LOG = LogManager.getLogger(CourseDaoTest.class);
+
+    /** List of courses. */
     private static final List<Course> COURSES = new ArrayList<>();
+
+    /** List of sections associated with the first course in the list. */
     private static final List<Section> INTRO_DB_SECTIONS = new ArrayList<>();
+
+    /** DAO for working with departments in the database. */
     private static final Dao<Department> DEPARTMENT_DAO = new Dao<>(Department.class);
+
+    /** DAO for working with courses in the database. */
     private static final CourseDao COURSE_DAO = new CourseDao();
+
+    /** DAO for working with sections in the database. */
     private static final Dao<Section> SECTION_DAO = new Dao<>(Section.class);
+
+    /** Initial course count. */
     private static final int INITIAL_COURSE_COUNT = 8;
+
+    /** Initial section count for the first course in the list. */
     private static final int INITIAL_INTRO_DB_SECTION_COUNT = 3;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -51,6 +67,7 @@ public class CourseDaoTest {
         INTRO_DB_SECTIONS.sort(Comparator.comparingLong(Section::getId));
     }
 
+    /** Ensure course can be loaded by id. */
     @Test
     void getById() {
         Course course1 = COURSES.get(0);
@@ -60,6 +77,7 @@ public class CourseDaoTest {
         assertEquals(course1, course);
     }
 
+    /** Ensure getting course by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         Course course = COURSE_DAO.getById(INITIAL_COURSE_COUNT + 10);
@@ -67,6 +85,7 @@ public class CourseDaoTest {
         assertNull(course);
     }
 
+    /** Ensure course can be updated. */
     @Test
     void update() {
         String newTitle = "Some other course";
@@ -81,6 +100,7 @@ public class CourseDaoTest {
         assertEquals(course2, course);
     }
 
+    /** Ensure course can be inserted. */
     @Test
     void insert() {
         List<Department> deptList = DEPARTMENT_DAO.getByPropertyEquals("name", "English");
@@ -94,6 +114,7 @@ public class CourseDaoTest {
         assertEquals(newCourse, course);
     }
 
+    /** Ensure course can be inserted together with associated sections. */
     @Test
     void insertWithSection() {
         List<Department> deptList = DEPARTMENT_DAO.getByPropertyEquals("name", "English");
@@ -113,6 +134,7 @@ public class CourseDaoTest {
         assertEquals(newSection, section);
     }
 
+    /** Ensure that courses cannot have the same code (e.g. ENG 101). */
     @Test
     void insert_DuplicateCourseDesignation() {
         List<Department> deptList = DEPARTMENT_DAO.getByPropertyEquals("name", "English");
@@ -123,6 +145,7 @@ public class CourseDaoTest {
         assertThrows(ConstraintViolationException.class, () -> COURSE_DAO.insert(newCourse));
     }
 
+    /** Ensure deleting a course deletes associated sections. */
     @Test
     void deleteWithSections() {
         Course course4 = COURSES.get(3);
@@ -142,6 +165,7 @@ public class CourseDaoTest {
         }
     }
 
+    /** Ensure all courses can be loaded. */
     @Test
     void getAll() {
         List<Course> coursesFromDb = COURSE_DAO.getAll();
@@ -156,6 +180,7 @@ public class CourseDaoTest {
         }
     }
 
+    /** Ensure a course can be found via exact property match. */
     @Test
     void getByPropertyEquals() {
         Course course1 = COURSES.get(0);
@@ -165,6 +190,7 @@ public class CourseDaoTest {
         assertEquals(6, foundCourses.size());
     }
 
+    /** Ensure searching for a course by invalid property match returns an empty list. */
     @Test
     void getByPropertyEquals_Missing() {
         List<Course> foundCourses = COURSE_DAO.getByPropertyEquals("id", COURSES.size() + 1);
@@ -172,6 +198,7 @@ public class CourseDaoTest {
         assertEquals(0, foundCourses.size());
     }
 
+    /** Ensure courses can be found by a property substring. */
     @Test
     void getByPropertySubstring() {
         List<Course> foundCourses = COURSE_DAO.getByPropertySubstring("title", "Introduction");
@@ -180,6 +207,7 @@ public class CourseDaoTest {
         assertEquals(2, foundCourses.size());
     }
 
+    /** Ensure find courses method works when only title substring is provided. */
     @Test
     void findCoursesByTitleOnly() {
         List<Course> foundCourses = COURSE_DAO.findCourses("intro",  -1);
@@ -187,6 +215,7 @@ public class CourseDaoTest {
         assertEquals(2, foundCourses.size());
     }
 
+    /** Ensure find courses method works when only department id is provided. */
     @Test
     void findCoursesByDepartmentOnly() {
         List<Course> foundCourses = COURSE_DAO.findCourses("",  2);
@@ -194,6 +223,7 @@ public class CourseDaoTest {
         assertEquals(2, foundCourses.size());
     }
 
+    /** Ensure find courses method works when both title substring and department ID are provided. */
     @Test
     void findCoursesByTitleAndDepartment() {
         List<Course> foundCourses = COURSE_DAO.findCourses("comp",  3);
@@ -201,6 +231,7 @@ public class CourseDaoTest {
         assertEquals(1, foundCourses.size());
     }
 
+    /** Ensure find courses method returns all courses if not search parameters are provided. */
     @Test
     void findCoursesWithoutParameters() {
         List<Course> foundCourses = COURSE_DAO.findCourses("",  -1);
@@ -208,6 +239,7 @@ public class CourseDaoTest {
         assertEquals(INITIAL_COURSE_COUNT, foundCourses.size());
     }
 
+    /** Ensure find courses method returns an empty list if no courses were found. */
     @Test
     void findCoursesNoResults() {
         List<Course> foundCourses = COURSE_DAO.findCourses("xyz",  12);
@@ -215,6 +247,7 @@ public class CourseDaoTest {
         assertEquals(0, foundCourses.size());
     }
 
+    /** Ensure that associated course sections are properly loaded. */
     @Test
     void getAllSections() {
         Course course1 = COURSES.get(0);
@@ -230,6 +263,7 @@ public class CourseDaoTest {
         }
     }
 
+    /** Ensure a section can be added to a course. */
     @Test
     void addSection() {
         Course composition = COURSES.get(5);
@@ -246,6 +280,7 @@ public class CourseDaoTest {
         assertTrue(course.getSections().contains(newSection));
     }
 
+    /** Ensure a section can be removed. */
     @Test
     void removeSection() {
         Course composition = COURSES.get(5);

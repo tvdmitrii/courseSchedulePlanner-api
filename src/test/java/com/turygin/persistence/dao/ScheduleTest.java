@@ -14,14 +14,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/** Schedule DAO tests. */
 public class ScheduleTest {
     private static final Logger LOG = LogManager.getLogger(ScheduleTest.class);
+
+    /** List of schedules. */
     private static final List<Schedule> SCHEDULES = new ArrayList<>();
+
+    /** DAO for working with schedules in the database. */
     private static final Dao<Schedule> SCHEDULE_DAO = new Dao<>(Schedule.class);
+
+    /** DAO for working with users in the database. */
     private static final Dao<User> USER_DAO = new Dao<>(User.class);
+
+    /** DAO for working with schedule sections in the database. */
     private static final Dao<ScheduleSection> SCHEDULE_SECTION_DAO = new Dao<>(ScheduleSection.class);
+
+    /** Initial count of schedules. */
     private static final int INITIAL_SCHEDULE_COUNT = 3;
 
+    /** Reset database before each run. */
     @BeforeEach
     void resetDatabase() {
         if(!ResetDatabaseHelper.reset()) {
@@ -40,6 +52,7 @@ public class ScheduleTest {
         SCHEDULES.sort(Comparator.comparingLong(Schedule::getId));
     }
 
+    /** Ensure schedule can be loaded by id. */
     @Test
     void getById() {
         Schedule schedule1 = SCHEDULES.get(0);
@@ -49,6 +62,7 @@ public class ScheduleTest {
         assertEquals(schedule1, schedule);
     }
 
+    /** Ensure getting schedule by invalid id returns null. */
     @Test
     void getById_InvalidId() {
         Schedule schedule = SCHEDULE_DAO.getById(INITIAL_SCHEDULE_COUNT + 10);
@@ -56,6 +70,7 @@ public class ScheduleTest {
         assertNull(schedule);
     }
 
+    /** Ensure schedule can be inserted. */
     @Test
     void insert() {
         User user = USER_DAO.getById(2);
@@ -70,6 +85,7 @@ public class ScheduleTest {
         assertEquals(schedule.getUser(), user);
     }
 
+    /** Ensure schedule can be updated. */
     @Test
     void update() {
         boolean selected = true;
@@ -83,6 +99,7 @@ public class ScheduleTest {
         assertEquals(schedule1, schedule);
     }
 
+    /** Ensure schedule can be removed. */
     @Test
     void delete() {
         Schedule schedule2 = SCHEDULES.get(2);
@@ -99,6 +116,7 @@ public class ScheduleTest {
         assertNull(section);
     }
 
+    /** Ensure all schedules can be loaded. */
     @Test
     void getAll() {
         List<Schedule> scheduleSectionsFromDb = SCHEDULE_DAO.getAll();
