@@ -43,37 +43,36 @@
   - [X] Implement proof of concept authentication
 
 ### Week 10.
-- [ ] Finish implementing authentication user stories.
-  - [ ] Sign Up
-  - [ ] Sign In
-  - [ ] Sign Out
+- [X] Finish implementing authentication user stories.
+  - [X] Sign Up
+  - [X] Sign In
+  - [X] Sign Out
 
 ### Week 11.
-- [ ] Implement viewing and choosing course sections
-- [ ] Implement adding courses to "My Courses"
-- [ ] Implement remove courses from "My Courses"
+- [X] Implement viewing and choosing course sections
+- [X] Implement adding courses to "My Courses"
+- [X] Implement remove courses from "My Courses"
 
 ### Week 12.
-- [ ] Implement schedule generation
-- [ ] Implement schedule viewing
+- [X] Implement adding courses for admins
+- [X] Implement editing courses for admins
+- [X] Implement removing courses for admins
 
 ### Week 13.
-- [ ] Implement adding courses for admins
-- [ ] Implement editing courses for admins
-- [ ] Implement removing courses for admins
+- [X] Implement adding section for admins
+- [X] Implement editing section for admins
+- [X] Implement removing section for admins
 
 ### Week 14.
-- [ ] Implement adding section for admins
-- [ ] Implement editing section for admins
-- [ ] Implement removing section for admins
+- [X] Implement schedule generation
+- [X] Implement schedule viewing
+- [X] Code ready
 
 ### Week 15.
 - [ ] Implement Feedback from Week 14 review
 - [ ] Final Presentation
 - [ ] Create video, add video link to readme.md
 - [ ] Finalize all documentation
-- [ ] Code quality check
-- [ ] Weekly journal entry
 
 ### Week 16.
 - [ ] Final touches

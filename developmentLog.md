@@ -60,3 +60,31 @@
 - Updated database design to store user UUID from Cognito, but remove all other personally identifiable information.
 - Added REST API user endpoint to handle new user creation and user search by UUID.
 - Implemented proof of concept Cognito authentication integration. The provided code was significantly reworked to take advantage of Jersey Client for fetching user token and com.auth0 libraries for token parsing and validation.
+
+### Week 10 - (10/28/2024 - 11/03/2024) - ~ 10 hours
+- Wrap-up authentication.
+- Began working on user course cart.
+
+### Week 11 - (11/04/2024 - 11/10/2024) - ~ 10 hours
+- Fully implemented course cart.
+- Began working on admin course editing feature.
+- Introduced navigation state and organized servlets.
+- Added to restrict access to certain pages.
+
+### Week 12 - (11/11/2024 - 11/17/2024) - ~ 20 hours
+- Added ability for administrators to add/delete/edit courses.
+- Refactored REST API to return response objects.
+- Vastly improved logging and error handling.
+- Added dynamic Bootstrap Toasts - pop-ups that notify user about success/failure of an operation.
+- Added meeting day and time DTOs in preparation for section editing feature.
+- Added course section and instructor resources.
+
+### Week 13 - (11/18/2024 - 11/24/2024) - ~ 20 hours
+- Added ability for administrators to add/delete/edit sections.
+- Course and section editing pages were combined, because handling modal windows with servlets proved to be difficult.
+- Instead of hiding pages from unauthorized users, all pages are visible in the navigation bar. If user does not have permission to access the page, they are sent to home page and a toast indicates the specific error.
+
+### Week 14 - (11/25/2024 - 12/01/2024) - ~ 20 hours
+- Added schedule generation functionality and ability to view schedules.
+- Clean up code, add JavaDocs if missing.
+- Update deployed version.
