@@ -187,6 +187,14 @@ public class Section {
         this.toTime = toTime;
     }
 
+    public boolean isConflicting(Section section) {
+        // Check if sections have at least one overlapping day and whether start time or end time of a given section
+        // falls between the start and end times of the current section.
+        return (section.getDaysOfWeek() & daysOfWeek) > 0
+                && (section.getFromTime().compareTo(fromTime) >= 0 && section.getFromTime().compareTo(toTime) <= 0
+                || section.getToTime().compareTo(fromTime) >= 0 && section.getToTime().compareTo(toTime) <= 0);
+    }
+
     /**
      * Generates a string representation of the section object.
      * @return string representation of the section

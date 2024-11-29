@@ -281,4 +281,28 @@ public class Mapper {
     public static CourseDTO cartCourseToCourseDTO(CartCourse cartCourse) {
         return Mapper.toCourseDTO(cartCourse.getCourse());
     }
+
+    public static SectionWithCourseDTO toSectionWithCourseDTO(Section section) {
+        SectionDTO sectionDTO = Mapper.toSectionDTO(section);
+        CourseDTO courseDTO = Mapper.toCourseDTO(section.getCourse());
+        return new SectionWithCourseDTO(sectionDTO, courseDTO);
+    }
+
+    public static ScheduleDTO toScheduleDTO(Schedule schedule) {
+        ScheduleDTO scheduleDTO = new ScheduleDTO(schedule.getId());
+        List<SectionWithCourseDTO> sections = new ArrayList<>();
+        for (ScheduleSection scheduleSection : schedule.getSections()) {
+            sections.add(toSectionWithCourseDTO(scheduleSection.getSection()));
+        }
+        scheduleDTO.setSections(sections);
+        return scheduleDTO;
+    }
+
+    public static List<ScheduleDTO> toScheduleDTO(List<Schedule> schedules) {
+        List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            scheduleDTOs.add(toScheduleDTO(schedule));
+        }
+        return scheduleDTOs;
+    }
 }

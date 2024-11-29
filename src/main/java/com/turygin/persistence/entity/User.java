@@ -127,8 +127,13 @@ public class User {
      * Sets schedules.
      * @param schedules the schedules
      */
-    public void setSchedules(List<Schedule> schedules) {
-        this.schedules = schedules;
+    public void replaceSchedules(List<Schedule> schedules) {
+        this.schedules.clear();
+        if (schedules != null) {
+            for (Schedule schedule : schedules) {
+                this.addSchedule(schedule);
+            }
+        }
     }
 
     /**

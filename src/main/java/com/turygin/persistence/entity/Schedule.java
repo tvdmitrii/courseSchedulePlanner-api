@@ -72,8 +72,13 @@ public class Schedule {
      * Sets sections.
      * @param sections the sections
      */
-    public void setSections(List<ScheduleSection> sections) {
-        this.sections = sections;
+    public void replaceSections(List<ScheduleSection> sections) {
+        this.sections.clear();
+        if (sections != null) {
+            for (ScheduleSection section : sections) {
+                this.addSection(section);
+            }
+        }
     }
 
     /**
@@ -91,6 +96,7 @@ public class Schedule {
      */
     public void addSection(Section section) {
         ScheduleSection newSection = new ScheduleSection(this, section);
+        newSection.setSchedule(this);
         sections.add(newSection);
     }
 
