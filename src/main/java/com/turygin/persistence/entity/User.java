@@ -133,7 +133,7 @@ public class User {
      * Sets schedules.
      * @param schedules the schedules
      */
-    public void replaceSchedules(List<Schedule> schedules) {
+    public void setSchedules(List<Schedule> schedules) {
         // Clear list
         this.schedules.clear();
 

@@ -85,10 +85,20 @@ public class Mapper {
         return new MeetingTimeDTO(time.toLocalTime());
     }
 
+    /**
+     * Converts instructor entity to instructor DTO.
+     * @param instructor instructor entity
+     * @return instructor DTO
+     */
     public static InstructorDTO toInstructorDTO(Instructor instructor) {
         return new InstructorDTO(instructor.getId(), instructor.getFullName());
     }
 
+    /**
+     * Converts a list of instructor entities to a list of instructor DTOs.
+     * @param instructors a list of instructor entities
+     * @return a list of instructor DTOs
+     */
     public static List<InstructorDTO> toInstructorDTO(List<Instructor> instructors) {
         List<InstructorDTO> instructorList = new ArrayList<>();
         for (Instructor i : instructors) {
@@ -123,6 +133,11 @@ public class Mapper {
         return sectionMap;
     }
 
+    /**
+     * Convert a list of section entities to a list of section DTOs.
+     * @param sections a list of section entities
+     * @return a list of section DTOs
+     */
     public static List<SectionDTO> toSectionDTOList(List<Section> sections) {
         List<SectionDTO> sectionList = new ArrayList<>();
         for (Section s : sections) {
@@ -241,6 +256,11 @@ public class Mapper {
                         courseDTO.getCredits(), courseDTO.getNumber()) : null;
     }
 
+    /**
+     * Creates a section entity from a section DTO by populating meeting days and times.
+     * @param sectionDTO source section DTO
+     * @return section entity with meeting days and times populated
+     */
     public static Section createSection(SectionDTO sectionDTO) {
         if(sectionDTO == null) { return null; }
 
@@ -251,6 +271,11 @@ public class Mapper {
                 Time.valueOf(sectionDTO.getEndTime().getTime()));
     }
 
+    /**
+     * Convert days of week DTO into an integer (byte) used by section entity.
+     * @param daysOfWeekDTO source days of week DTO
+     * @return an integer that encodes meeting days for section entity
+     */
     public static int toSectionDayOfWeek(DaysOfWeekDTO daysOfWeekDTO) {
         int daysOfWeek = 0;
         Boolean[] selectedDays = daysOfWeekDTO.getDaysOfWeek();
@@ -282,22 +307,40 @@ public class Mapper {
         return Mapper.toCourseDTO(cartCourse.getCourse());
     }
 
+    /**
+     * Converts a section into a section with course DTO.
+     * @param section source section entity
+     * @return section with course DTO containing both section and course information
+     */
     public static SectionWithCourseDTO toSectionWithCourseDTO(Section section) {
         SectionDTO sectionDTO = Mapper.toSectionDTO(section);
         CourseDTO courseDTO = Mapper.toCourseDTO(section.getCourse());
         return new SectionWithCourseDTO(sectionDTO, courseDTO);
     }
 
+    /**
+     * Converts schedule entity to schedule DTO.
+     * @param schedule source schedule entity
+     * @return schedule DTO
+     */
     public static ScheduleDTO toScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO(schedule.getId());
+
+        // Populate sections
         List<SectionWithCourseDTO> sections = new ArrayList<>();
         for (ScheduleSection scheduleSection : schedule.getSections()) {
             sections.add(toSectionWithCourseDTO(scheduleSection.getSection()));
         }
         scheduleDTO.setSections(sections);
+
         return scheduleDTO;
     }
 
+    /**
+     * Convert a list of schedule entities to a list of schedule DTOs.
+     * @param schedules source list of schedule entities
+     * @return list of schedule DTOs
+     */
     public static List<ScheduleDTO> toScheduleDTO(List<Schedule> schedules) {
         List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
         for (Schedule schedule : schedules) {

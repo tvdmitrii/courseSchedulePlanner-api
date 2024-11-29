@@ -23,6 +23,10 @@ public class InstructorResource implements IInstructorResource {
     /** Handles instructor related database queries. */
     private final Dao<Instructor> INSTRUCTOR_DAO = new Dao<>(Instructor.class);
 
+    /**
+     * Fetches information about all available instructors.
+     * @return a list of instructor DTOs
+     */
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getAllInstructors() {
