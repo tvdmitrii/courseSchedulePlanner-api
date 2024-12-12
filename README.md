@@ -31,8 +31,6 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
   * AWS Cognito
 * CSS 
   * Bootstrap
-* Data Validation
-  * Bootstrap Validator for front end
 * Logging
   * Log4J2
 * Hosting

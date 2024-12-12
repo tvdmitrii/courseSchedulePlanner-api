@@ -69,10 +69,7 @@
 - [X] Code ready
 
 ### Week 15.
-- [ ] Implement Feedback from Week 14 review
-- [ ] Final Presentation
-- [ ] Create video, add video link to readme.md
-- [ ] Finalize all documentation
+- [X] Final touches
 
 ### Week 16.
-- [ ] Final touches
+- [X] Final Presentation
