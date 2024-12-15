@@ -2,6 +2,8 @@
 
 This is a semester-long individual project for Enterprise Java Programming course that aims to showcase experience with Java, Java Web Development, REST API, Unit Testing, Database Design, and Hibernate Object Relational Mapping.
 
+Checkout website demo and high-level code overview on [YouTube](https://youtu.be/JCVENmpXvnI).
+
 [Demo Website](https://csp-tomcat-10-1-env.eba-uyvpbhrz.us-east-2.elasticbeanstalk.com/).
 A proper SSL certificate cannot be created without a domain, so the website relies on a self-signed certificate.
 
