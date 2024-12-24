@@ -4,9 +4,6 @@ This is a semester-long individual project for Enterprise Java Programming cours
 
 Checkout website demo and high-level code overview on [YouTube](https://youtu.be/JCVENmpXvnI).
 
-[Demo Website](https://csp-tomcat-10-1-env.eba-uyvpbhrz.us-east-2.elasticbeanstalk.com/).
-A proper SSL certificate cannot be created without a domain, so the website relies on a self-signed certificate.
-
 ## Structure
 Current repository contains database access and REST API logic. [Course Schedule Planner WebApp](https://github.com/tvdmitrii/courseSchedulePlanner-webApp) contains the WebApp that consume the REST API. [Course Schedule Planner API Interface](https://github.com/tvdmitrii/courseSchedulePlanner-interface) contains the DTO classes and resource interfaces for REST API.
 
