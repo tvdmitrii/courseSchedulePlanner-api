@@ -1,11 +1,9 @@
 # Course Schedule Planner
 
-This is a semester-long individual project for Enterprise Java Programming course that aims to showcase experience with Java, Java Web Development, REST API, Unit Testing, Database Design, and Hibernate Object Relational Mapping.
-
-Checkout website demo and high-level code overview on [YouTube](https://youtu.be/JCVENmpXvnI).
+This project was originally developed as an individual academic project and designed and implemented end-to-end by me. It showcases hands-on experience with Java-based web application development, including REST API design, unit testing, database modeling, and Hibernate object–relational mapping.
 
 ## Structure
-Current repository contains database access and REST API logic. [Course Schedule Planner WebApp](https://github.com/tvdmitrii/courseSchedulePlanner-webApp) contains the WebApp that consume the REST API. [Course Schedule Planner API Interface](https://github.com/tvdmitrii/courseSchedulePlanner-interface) contains the DTO classes and resource interfaces for REST API.
+This repository contains the backend REST API and database access logic. [Course Schedule Planner WebApp](https://github.com/tvdmitrii/courseSchedulePlanner-webApp) contains the WebApp that consumes the REST API. [Course Schedule Planner API Interface](https://github.com/tvdmitrii/courseSchedulePlanner-interface) contains the DTO classes and resource interfaces for REST API.
 
 ## Problem Statement
 
@@ -43,6 +41,10 @@ When it comes to scheduling, I believe that an image is worth a thousand words. 
 - [Database design](DesignDocuments/databaseDesign.png).
 - [User stories](DesignDocuments/userStories.md) outlining the project capabilities.
 - [Application Screen Mockups](DesignDocuments/screens.md).
+
+## Demo
+
+A short demo and high-level walkthrough of the project is available here: [YouTube](https://youtu.be/JCVENmpXvnI).
 
 ## Development Progression
 - [Project plan](projectPlan.md) outlining a rough project execution plan.
